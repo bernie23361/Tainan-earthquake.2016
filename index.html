@@ -21,8 +21,8 @@
         .star {
             position: absolute; background: #fff; border-radius: 50%; opacity: 0.4;
             animation: twinkle var(--duration) infinite ease-in-out;
-            /* 讓漸亮與漸暗的時間更悠長，提升質感 */
-            transition: opacity 1.5s ease-in-out, transform 1.5s ease-in-out, box-shadow 1.5s ease-in-out;
+            /* 將漸亮與漸暗的時間拉長至 5 秒，使用 ease 讓起伏更平緩 */
+            transition: opacity 5s ease, transform 5s ease, box-shadow 5s ease;
         }
 
         @keyframes twinkle {
@@ -30,7 +30,7 @@
             50% { opacity: 0.8; transform: scale(1.2); }
         }
 
-        /* 內容佈局 */
+        /* 內容層 */
         .content { position: relative; z-index: 10; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20px; }
         
         .event-time { color: #d4af37; font-size: 1.15rem; letter-spacing: 0.4rem; margin-bottom: 25px; animation: golden-twinkle 4s infinite ease-in-out; }
@@ -62,14 +62,13 @@
         <div class="slogan-container">
             <div id="slogan-text">十年前...這座島嶼，在時隔 17 年後的黑夜裡，再次發生了劇烈的晃動。<br>那一刻，全台甦醒，記憶留下了痕跡。<br>我們之所以選擇記得，那是因為，記得就是一種前行。</div>
         </div>
-        <button id="main-btn" class="enter-btn">拾起記憶</button>
+        <button class="enter-btn">拾起記憶</button>
     </div>
 
     <script>
         const container = document.getElementById('stars-container');
         const starElements = [];
 
-        // 1. 生成星辰
         for (let i = 0; i < 117; i++) {
             const star = document.createElement('div');
             star.className = 'star';
@@ -84,14 +83,12 @@
             starElements.push(star);
         }
 
-        // 2. 視差效果
         window.addEventListener('mousemove', (e) => {
             const moveX = (window.innerWidth / 2 - e.clientX) * 0.015;
             const moveY = (window.innerHeight / 2 - e.clientY) * 0.015;
             container.style.transform = `translate3d(${moveX}px, ${moveY}px, 0)`;
         });
 
-        // 3. 文字切換與星辰共鳴邏輯
         const sloganElement = document.getElementById('slogan-text');
         const finalSlogan = "這片星空，為 0206 地震中的 117 條生命而存在！";
 
@@ -102,17 +99,17 @@
                 sloganElement.innerHTML = finalSlogan;
                 sloganElement.classList.remove('fade-out');
 
-                // 漸強亮起 (1.5s 漸變)
+                // 緩慢亮起 (5s)
                 starElements.forEach(star => {
                     star.style.animation = 'none'; 
                     star.style.opacity = '1';
                     star.style.transform = 'scale(3.8)';
-                    star.style.boxShadow = '0 0 30px 4px rgba(255,255,255,0.8)';
+                    star.style.boxShadow = '0 0 35px 5px rgba(255,255,255,0.9)';
                 });
 
-                // --- 維持最亮狀態 2 秒 ---
+                // --- 靜止最亮狀態維持 5 秒 ---
                 setTimeout(() => {
-                    // 漸弱恢復 (1.5s 漸變)
+                    // 緩慢變暗恢復 (5s)
                     starElements.forEach(star => {
                         star.style.opacity = '';
                         star.style.transform = '';
@@ -120,7 +117,7 @@
                         const dur = star.style.getPropertyValue('--duration');
                         star.style.animation = `twinkle ${dur} infinite ease-in-out`;
                     });
-                }, 2000); 
+                }, 5000); 
 
             }, 2000);
         }, 5000);
