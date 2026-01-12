@@ -16,25 +16,17 @@
         #slideshow { position: fixed; inset: 0; z-index: 0; }
         .slide { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0.25; background-color: #0b0d13; }
         
-        #stars-container { position: fixed; inset: -50px; z-index: 1; pointer-events: none; transition: transform 0.1s ease-out; }
+        #stars-container { position: fixed; inset: -50px; z-index: 1; pointer-events: none; }
         
         .star {
             position: absolute; background: #fff; border-radius: 50%; opacity: 0.4;
             animation: twinkle var(--duration) infinite ease-in-out;
-            transition: all 1.2s ease; /* 讓亮起與恢復的效果更深邃 */
-        }
-
-        /* 117條生命共鳴特效 */
-        .star.flare {
-            opacity: 1 !important;
-            transform: scale(2.8) !important;
-            box-shadow: 0 0 15px #fff, 0 0 30px rgba(255, 255, 255, 0.6);
-            filter: brightness(1.8);
+            transition: opacity 1s ease, transform 1s ease, box-shadow 1s ease; /* 確保變亮的過程有動畫 */
         }
 
         @keyframes twinkle {
             0%, 100% { opacity: 0.3; transform: scale(1); }
-            50% { opacity: 0.9; transform: scale(1.2); }
+            50% { opacity: 0.8; transform: scale(1.2); }
         }
 
         /* 內容層佈局 */
@@ -49,7 +41,6 @@
         #slogan-text { 
             font-size: 1.1rem; border-left: 2px solid #d4af37; padding-left: 20px; 
             line-height: 2; text-align: left; transition: opacity 2s ease-in-out; 
-            white-space: pre-line; /* 支援換行符號 */
         }
         .fade-out { opacity: 0 !important; }
 
@@ -69,18 +60,17 @@
         <h1>拾載：重返震撼南台的那一晚</h1>
         
         <div class="slogan-container">
-            <div id="slogan-text">十年前...這座島嶼，在時隔 17 年後的黑夜裡，再次發生了劇烈的晃動。
-那一刻，全台甦醒，記憶留下了痕跡。
-我們之所以選擇記得，那是因為，記得就是一種前行。</div>
+            <div id="slogan-text">十年前...這座島嶼，在時隔 17 年後的黑夜裡，再次發生了劇烈的晃動。<br>那一刻，全台甦醒，記憶留下了痕跡。<br>我們之所以選擇記得，那是因為，記得就是一種前行。</div>
         </div>
         
         <button class="enter-btn">拾起記憶</button>
     </div>
 
     <script>
-        // 1. 生成 117 顆星辰
+        // 1. 生成 117 顆星辰並存入陣列
         const container = document.getElementById('stars-container');
-        const stars = [];
+        const starElements = []; // 確保陣列名稱唯一
+
         for (let i = 0; i < 117; i++) {
             const star = document.createElement('div');
             star.className = 'star';
@@ -91,7 +81,7 @@
             star.style.height = size + 'px';
             star.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
             container.appendChild(star);
-            stars.push(star);
+            starElements.push(star);
         }
 
         // 2. 視差效果
@@ -101,29 +91,36 @@
             container.style.transform = `translate3d(${moveX}px, ${moveY}px, 0)`;
         });
 
-        // 3. 副標題輪播切換 + 星辰亮起
+        // 3. 副標題切換與星辰同步亮起
         const sloganElement = document.getElementById('slogan-text');
         const finalSlogan = "這片星空，為 0206 地震中的 117 條生命而存在！";
 
         setTimeout(() => {
-            // 文案淡出
             sloganElement.classList.add('fade-out');
 
             setTimeout(() => {
-                // 更換為終極文案並淡入
                 sloganElement.innerHTML = finalSlogan;
                 sloganElement.classList.remove('fade-out');
 
-                // 觸發星辰集體亮起
-                stars.forEach(s => s.classList.add('flare'));
+                // 強制讓所有星星亮起
+                starElements.forEach(star => {
+                    star.style.opacity = "1";
+                    star.style.transform = "scale(3)";
+                    star.style.boxShadow = "0 0 20px #fff";
+                    star.style.backgroundColor = "#fff";
+                });
                 
-                // 1.8 秒後恢復平靜
+                // 1.5 秒後平滑恢復正常
                 setTimeout(() => {
-                    stars.forEach(s => s.classList.remove('flare'));
-                }, 1800);
+                    starElements.forEach(star => {
+                        star.style.opacity = ""; // 恢復 CSS 控制
+                        star.style.transform = ""; 
+                        star.style.boxShadow = "";
+                    });
+                }, 1500);
 
-            }, 2000); // 配合 CSS transition 2s
-        }, 5000); // 初始停留在您的文案 5 秒
+            }, 2000);
+        }, 5000);
     </script>
 </body>
 </html>
