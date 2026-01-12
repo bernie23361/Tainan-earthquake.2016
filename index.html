@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>拾載：重返震撼南台的那一夜</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="hero-bg"></div>
+
+    <div id="overlay" class="overlay">
+        <div class="card-container">
+            <div id="age-selector">
+                <h2>歡迎來到拾載</h2>
+                <p>請選擇您的記憶視角：</p>
+                <button onclick="showContent('young')">我是青少年/小朋友</button>
+                <button onclick="showContent('adult')">我是大人/當時有印象</button>
+            </div>
+            
+            <div id="card-content" class="hidden">
+                <h3 id="card-title"></h3>
+                <p id="card-text"></p>
+                <button class="enter-btn" onclick="enterSite()">拾起記憶</button>
+            </div>
+        </div>
+    </div>
+
+    <main id="main-site" class="hidden">
+        <header>
+            <p class="decade-archive">D E C A D E  A R C H I V E</p>
+            <h1>0206 / 重返震撼南台</h1>
+            <p class="slogan">記憶的刻痕，是重生的起點。</p>
+        </header>
+        </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
