@@ -1,0 +1,63 @@
+:root {
+    --bg-color: #0b0d13;
+    --accent-color: #d4af37; /* 金色，代表重生與刻痕 */
+}
+
+body {
+    background-color: var(--bg-color);
+    color: white;
+    font-family: "Noto Sans TC", sans-serif;
+    margin: 0;
+    overflow: hidden; /* 防止在卡片模式時滾動 */
+}
+
+/* 硬體加速優化：強制使用 GPU 渲染背景 */
+#hero-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, #1a1e29 0%, #0b0d13 100%);
+    z-index: -1;
+    will-change: transform;
+    transform: translateZ(0); 
+}
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    backdrop-filter: blur(10px); /* 現代感模糊，但效能尚可 */
+}
+
+.card-container {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+    border-radius: 15px;
+    max-width: 500px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.hidden { display: none; }
+
+button {
+    background: transparent;
+    border: 1px solid var(--accent-color);
+    color: var(--accent-color);
+    padding: 10px 20px;
+    margin: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: var(--accent-color);
+    color: black;
+}
