@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>拾載：重返震撼南台的那一晚</title>
     <style>
-        /* 1. 核心樣式 */
+        /* --- 核心樣式 --- */
         body, html {
             margin: 0;
             padding: 0;
@@ -14,25 +14,10 @@
             background-color: #0b0d13;
             color: white;
             font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
-            overflow: hidden;
+            overflow-x: hidden;
         }
 
-        /* 2. 金色微閃爍動畫 (優化版) */
-        @keyframes golden-twinkle {
-            0%, 100% { opacity: 0.6; text-shadow: 0 0 5px #d4af37; }
-            50% { opacity: 1; text-shadow: 0 0 15px #d4af37, 0 0 25px rgba(212, 175, 55, 0.5); }
-        }
-
-        .event-time {
-            color: #d4af37; /* 金色 */
-            font-size: 1.15rem;
-            letter-spacing: 0.4rem;
-            font-weight: 500;
-            margin-bottom: 25px;
-            animation: golden-twinkle 4s infinite ease-in-out;
-        }
-
-        /* 3. 背景與 117 顆星辰 */
+        /* --- 背景與 117 顆星辰 --- */
         #slideshow { position: fixed; inset: 0; z-index: 0; }
         .slide {
             position: absolute;
@@ -43,7 +28,14 @@
             background-color: #0b0d13;
         }
 
-        #stars-container { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
+        #stars-container { 
+            position: fixed; 
+            inset: -50px; /* 稍微向外擴張，防止視差位移時邊緣漏光 */
+            z-index: 1; 
+            pointer-events: none;
+            will-change: transform; /* 提醒瀏覽器優化效能 */
+        }
+
         .star {
             position: absolute;
             background: #fff;
@@ -57,7 +49,7 @@
             50% { opacity: 0.9; transform: scale(1.2); }
         }
 
-        /* 4. 內容佈局 */
+        /* --- 文字與內容層 --- */
         .content {
             position: relative;
             z-index: 10;
@@ -70,8 +62,22 @@
             padding: 20px;
         }
 
+        .event-time {
+            color: #d4af37;
+            font-size: 1.15rem;
+            letter-spacing: 0.4rem;
+            font-weight: 500;
+            margin-bottom: 25px;
+            animation: golden-twinkle 4s infinite ease-in-out;
+        }
+
+        @keyframes golden-twinkle {
+            0%, 100% { opacity: 0.6; text-shadow: 0 0 5px #d4af37; }
+            50% { opacity: 1; text-shadow: 0 0 15px #d4af37, 0 0 25px rgba(212, 175, 55, 0.5); }
+        }
+
         h1 {
-            font-size: 3.8rem;
+            font-size: clamp(2rem, 8vw, 3.8rem); /* 響應式字體大小 */
             letter-spacing: 0.6rem;
             margin: 0 0 15px 0;
             font-weight: 300;
@@ -84,7 +90,7 @@
             padding-left: 20px;
             margin-top: 30px;
             line-height: 1.8;
-            text-align: left; /* 保持左對齊刻痕感 */
+            text-align: left;
         }
 
         .enter-btn {
@@ -103,7 +109,6 @@
         .enter-btn:hover {
             background: #d4af37;
             color: #000;
-            border-color: #d4af37;
             box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
         }
     </style>
@@ -118,31 +123,48 @@
 
     <div class="content">
         <div class="event-time">2016 . 02 . 06 — 03:57 AM</div>
-        
         <h1>拾載：重返震撼南台的那一晚</h1>
-        
         <div class="slogan">
             那是維冠大樓倒下的瞬間，也是台南人共同記憶的裂痕。<br>
             十年過去，我們拾起碎片，記載不曾遺忘的韌性。
         </div>
-        
         <button class="enter-btn">拾起記憶</button>
     </div>
 
     <script>
-        // 生成 117 顆星辰
+        // --- 1. 生成 117 顆星辰 ---
         const starsContainer = document.getElementById('stars-container');
         for (let i = 0; i < 117; i++) {
             const star = document.createElement('div');
             star.className = 'star';
             star.style.left = Math.random() * 100 + '%';
             star.style.top = Math.random() * 100 + '%';
-            const size = Math.random() * 1.5 + 1; // 稍微調小一點讓畫面更精緻
+            const size = Math.random() * 1.5 + 1;
             star.style.width = size + 'px';
             star.style.height = size + 'px';
             star.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
+            
+            // 給每顆星隨機深度權重 (用於視差位移差異化)
+            star.dataset.depth = Math.random() * 0.05 + 0.02;
+            
             starsContainer.appendChild(star);
         }
+
+        // --- 2. 視差效果：監聽滑鼠與捲動 ---
+        const handleParallax = (e) => {
+            const x = (e.clientX || 0);
+            const y = (e.clientY || window.scrollY);
+            
+            // 透過變換 container 達成整體微移，效能較佳
+            // 若想讓每顆星位移不同，則改為遍歷 star
+            const moveX = (window.innerWidth / 2 - x) * 0.01;
+            const moveY = (window.innerHeight / 2 - y) * 0.01;
+            
+            starsContainer.style.transform = `translate3d(${moveX}px, ${moveY}px, 0)`;
+        };
+
+        window.addEventListener('mousemove', handleParallax);
+        window.addEventListener('scroll', handleParallax);
     </script>
 </body>
 </html>
