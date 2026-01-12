@@ -21,7 +21,7 @@
         .star {
             position: absolute; background: #fff; border-radius: 50%; opacity: 0.4;
             animation: twinkle var(--duration) infinite ease-in-out;
-            transition: opacity 1s ease, transform 1s ease, box-shadow 1s ease; /* 確保變亮的過程有動畫 */
+            transition: opacity 0.8s ease, transform 0.8s ease, box-shadow 0.8s ease;
         }
 
         @keyframes twinkle {
@@ -29,7 +29,7 @@
             50% { opacity: 0.8; transform: scale(1.2); }
         }
 
-        /* 內容層佈局 */
+        /* 內容佈局 */
         .content { position: relative; z-index: 10; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20px; }
         
         .event-time { color: #d4af37; font-size: 1.15rem; letter-spacing: 0.4rem; margin-bottom: 25px; animation: golden-twinkle 4s infinite ease-in-out; }
@@ -58,19 +58,17 @@
     <div class="content">
         <div class="event-time">2016 . 02 . 06 — 03:57 AM</div>
         <h1>拾載：重返震撼南台的那一晚</h1>
-        
         <div class="slogan-container">
             <div id="slogan-text">十年前...這座島嶼，在時隔 17 年後的黑夜裡，再次發生了劇烈的晃動。<br>那一刻，全台甦醒，記憶留下了痕跡。<br>我們之所以選擇記得，那是因為，記得就是一種前行。</div>
         </div>
-        
         <button class="enter-btn">拾起記憶</button>
     </div>
 
     <script>
-        // 1. 生成 117 顆星辰並存入陣列
         const container = document.getElementById('stars-container');
-        const starElements = []; // 確保陣列名稱唯一
+        const starElements = [];
 
+        // 1. 生成星辰
         for (let i = 0; i < 117; i++) {
             const star = document.createElement('div');
             star.className = 'star';
@@ -79,19 +77,20 @@
             const size = Math.random() * 1.5 + 1;
             star.style.width = size + 'px';
             star.style.height = size + 'px';
-            star.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
+            const duration = (Math.random() * 3 + 2) + 's';
+            star.style.setProperty('--duration', duration);
             container.appendChild(star);
             starElements.push(star);
         }
 
-        // 2. 視差效果
+        // 2. 視差
         window.addEventListener('mousemove', (e) => {
             const moveX = (window.innerWidth / 2 - e.clientX) * 0.015;
             const moveY = (window.innerHeight / 2 - e.clientY) * 0.015;
             container.style.transform = `translate3d(${moveX}px, ${moveY}px, 0)`;
         });
 
-        // 3. 副標題切換與星辰同步亮起
+        // 3. 核心：同步亮起邏輯
         const sloganElement = document.getElementById('slogan-text');
         const finalSlogan = "這片星空，為 0206 地震中的 117 條生命而存在！";
 
@@ -102,20 +101,24 @@
                 sloganElement.innerHTML = finalSlogan;
                 sloganElement.classList.remove('fade-out');
 
-                // 強制讓所有星星亮起
+                // 強制亮起：先停止動畫，再套用高亮度樣式
                 starElements.forEach(star => {
-                    star.style.opacity = "1";
-                    star.style.transform = "scale(3)";
-                    star.style.boxShadow = "0 0 20px #fff";
-                    star.style.backgroundColor = "#fff";
+                    star.style.animation = 'none'; // 停止原本的微弱閃爍
+                    star.style.opacity = '1';
+                    star.style.transform = 'scale(3.5)';
+                    star.style.boxShadow = '0 0 20px 2px #fff';
+                    star.style.backgroundColor = '#fff';
                 });
-                
-                // 1.5 秒後平滑恢復正常
+
+                // 1.5 秒後恢復
                 setTimeout(() => {
                     starElements.forEach(star => {
-                        star.style.opacity = ""; // 恢復 CSS 控制
-                        star.style.transform = ""; 
-                        star.style.boxShadow = "";
+                        star.style.opacity = '';
+                        star.style.transform = '';
+                        star.style.boxShadow = '';
+                        // 恢復原本的閃爍動畫
+                        const dur = star.style.getPropertyValue('--duration');
+                        star.style.animation = `twinkle ${dur} infinite ease-in-out`;
                     });
                 }, 1500);
 
