@@ -43,3 +43,42 @@ function enterSite() {
         document.body.style.overflow = 'auto'; // 恢復頁面滾動
     }, 800);
 }
+// 1. 生成 117 顆星辰
+function createStars() {
+    const container = document.getElementById('stars-container');
+    const starCount = 117;
+
+    for (let i = 0; i < starCount; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        
+        // 隨機分佈位置
+        const x = Math.random() * 100;
+        const y = Math.random() * 100;
+        const size = Math.random() * 2 + 1; // 1px ~ 3px
+        const duration = Math.random() * 3 + 2; // 2s ~ 5s
+
+        star.style.left = `${x}%`;
+        star.style.top = `${y}%`;
+        star.style.width = `${size}px`;
+        star.style.height = `${size}px`;
+        star.style.setProperty('--duration', `${duration}s`);
+
+        container.appendChild(star);
+    }
+}
+
+// 2. 輪播邏輯
+let currentSlide = 0;
+function nextSlide() {
+    const slides = document.querySelectorAll('.slide');
+    slides[currentSlide].classList.remove('active');
+    currentSlide = (currentSlide + 1) % slides.length;
+    slides[currentSlide].classList.add('active');
+}
+
+// 初始化
+window.onload = () => {
+    createStars();
+    setInterval(nextSlide, 6000); // 每 6 秒切換背景
+};
