@@ -5,70 +5,115 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>拾載：重返震撼南台的那一晚</title>
     <style>
+        /* --- 1. 核心樣式設定 --- */
         body, html {
             margin: 0; padding: 0; width: 100%; height: 100%;
             background-color: #0b0d13; color: white;
             font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
-            overflow: hidden;
+            overflow: hidden; /* 保持首頁沉浸感，防止滾動 */
         }
 
-        /* 背景與星辰 */
-        #slideshow { position: fixed; inset: 0; z-index: 0; }
-        .slide { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0.25; background-color: #0b0d13; }
-        
-        #stars-container { position: fixed; inset: -50px; z-index: 1; pointer-events: none; }
-        
+        /* --- 2. 底層照片輪播 --- */
+        #slideshow { position: fixed; inset: 0; z-index: 0; background: #0b0d13; }
+        .slide {
+            position: absolute; inset: 0;
+            background-size: cover; background-position: center;
+            opacity: 0; transition: opacity 3s ease-in-out;
+            /* 調暗照片並輕微模糊，突顯文字與星辰 */
+            filter: brightness(0.25) contrast(1.1) blur(1.5px);
+        }
+        .slide.active { opacity: 0.3; }
+
+        /* --- 3. 117 顆星辰層 --- */
+        #stars-container { 
+            position: fixed; inset: -100px; z-index: 1; 
+            pointer-events: none; will-change: transform; 
+        }
         .star {
             position: absolute; background: #fff; border-radius: 50%; opacity: 0.4;
             animation: twinkle var(--duration) infinite ease-in-out;
-            /* 將漸亮與漸暗的時間拉長至 5 秒，使用 ease 讓起伏更平緩 */
+            /* 讓亮起與變暗的過程長達 5 秒 */
             transition: opacity 5s ease, transform 5s ease, box-shadow 5s ease;
         }
-
         @keyframes twinkle {
             0%, 100% { opacity: 0.3; transform: scale(1); }
             50% { opacity: 0.8; transform: scale(1.2); }
         }
 
-        /* 內容層 */
-        .content { position: relative; z-index: 10; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20px; }
-        
-        .event-time { color: #d4af37; font-size: 1.15rem; letter-spacing: 0.4rem; margin-bottom: 25px; animation: golden-twinkle 4s infinite ease-in-out; }
-        @keyframes golden-twinkle { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; text-shadow: 0 0 15px #d4af37; } }
+        /* --- 4. 內容佈局層 --- */
+        .content {
+            position: relative; z-index: 10;
+            height: 100vh; display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            text-align: center; padding: 20px;
+        }
 
-        h1 { font-size: clamp(2.2rem, 8vw, 4.2rem); letter-spacing: 0.7rem; margin: 0; font-weight: 900; text-shadow: 0 0 40px #000; }
+        /* 金色時間標示 */
+        .event-time {
+            color: #d4af37; font-size: 1.15rem; letter-spacing: 0.4rem;
+            margin-bottom: 25px; animation: golden-twinkle 4s infinite ease-in-out;
+        }
+        @keyframes golden-twinkle {
+            0%, 100% { opacity: 0.6; text-shadow: 0 0 5px #d4af37; }
+            50% { opacity: 1; text-shadow: 0 0 15px #d4af37; }
+        }
 
-        .slogan-container { height: 140px; margin-top: 35px; display: flex; align-items: flex-start; }
-        #slogan-text { 
-            font-size: 1.1rem; border-left: 2px solid #d4af37; padding-left: 20px; 
-            line-height: 2; text-align: left; transition: opacity 2s ease-in-out; 
+        /* 加粗標題 */
+        h1 {
+            font-size: clamp(2.2rem, 8vw, 4.2rem); 
+            letter-spacing: 0.7rem; margin: 0;
+            font-weight: 900; 
+            text-shadow: 0px 0px 15px rgba(255, 255, 255, 0.2), 0px 0px 40px rgba(0, 0, 0, 1);
+        }
+
+        /* 副標題容器與轉場動畫 */
+        .slogan-container { height: 150px; margin-top: 35px; display: flex; align-items: flex-start; }
+        #slogan-text {
+            font-size: 1.1rem; border-left: 2px solid #d4af37;
+            padding-left: 20px; line-height: 2; text-align: left;
+            transition: opacity 2s ease-in-out;
         }
         .fade-out { opacity: 0 !important; }
 
-        .enter-btn { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.25); color: white; padding: 14px 45px; cursor: pointer; backdrop-filter: blur(8px); margin-top: 30px; letter-spacing: 0.3rem; transition: 0.5s; }
-        .enter-btn:hover { background: #d4af37; color: #000; box-shadow: 0 0 20px rgba(212, 175, 55, 0.4); }
+        /* 按鈕樣式 */
+        .enter-btn {
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.25);
+            color: white; padding: 14px 45px; cursor: pointer;
+            backdrop-filter: blur(8px); margin-top: 30px;
+            letter-spacing: 0.3rem; transition: 0.5s;
+        }
+        .enter-btn:hover {
+            background: #d4af37; color: #000;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+        }
     </style>
 </head>
 <body>
 
     <div id="slideshow">
         <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?q=80&w=2071');"></div>
+        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1506318137071-a8e063b4999d?q=80&w=2070');"></div>
+        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1475130092625-f0499111d28d?q=80&w=2070');"></div>
     </div>
+
     <div id="stars-container"></div>
 
     <div class="content">
         <div class="event-time">2016 . 02 . 06 — 03:57 AM</div>
         <h1>拾載：重返震撼南台的那一晚</h1>
+        
         <div class="slogan-container">
             <div id="slogan-text">十年前...這座島嶼，在時隔 17 年後的黑夜裡，再次發生了劇烈的晃動。<br>那一刻，全台甦醒，記憶留下了痕跡。<br>我們之所以選擇記得，那是因為，記得就是一種前行。</div>
         </div>
-        <button class="enter-btn">拾起記憶</button>
+        
+        <button class="enter-btn" onclick="alert('接下來將進入選擇導覽功能')">拾起記憶</button>
     </div>
 
     <script>
-        const container = document.getElementById('stars-container');
+        const starsContainer = document.getElementById('stars-container');
         const starElements = [];
 
+        // 1. 生成 117 顆星辰
         for (let i = 0; i < 117; i++) {
             const star = document.createElement('div');
             star.className = 'star';
@@ -79,37 +124,49 @@
             star.style.height = size + 'px';
             const duration = (Math.random() * 3 + 2) + 's';
             star.style.setProperty('--duration', duration);
-            container.appendChild(star);
+            starsContainer.appendChild(star);
             starElements.push(star);
         }
 
+        // 2. 背景輪播邏輯
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        setInterval(() => {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }, 8000); // 8 秒更換一張背景
+
+        // 3. 視差位移效果
         window.addEventListener('mousemove', (e) => {
             const moveX = (window.innerWidth / 2 - e.clientX) * 0.015;
             const moveY = (window.innerHeight / 2 - e.clientY) * 0.015;
-            container.style.transform = `translate3d(${moveX}px, ${moveY}px, 0)`;
+            starsContainer.style.transform = `translate3d(${moveX}px, ${moveY}px, 0)`;
         });
 
+        // 4. 副標題切換與 117 顆星辰共鳴邏輯
         const sloganElement = document.getElementById('slogan-text');
         const finalSlogan = "這片星空，為 0206 地震中的 117 條生命而存在！";
 
         setTimeout(() => {
+            // 第一階段：原有的文案淡出
             sloganElement.classList.add('fade-out');
 
             setTimeout(() => {
+                // 第二階段：切換為終極文案並淡入
                 sloganElement.innerHTML = finalSlogan;
                 sloganElement.classList.remove('fade-out');
 
-                // 緩慢亮起 (5s)
+                // 第三階段：117 顆星辰集體緩慢變亮 (5秒漸變)
                 starElements.forEach(star => {
-                    star.style.animation = 'none'; 
+                    star.style.animation = 'none'; // 暫停微弱閃爍
                     star.style.opacity = '1';
                     star.style.transform = 'scale(3.8)';
                     star.style.boxShadow = '0 0 35px 5px rgba(255,255,255,0.9)';
                 });
 
-                // --- 靜止最亮狀態維持 5 秒 ---
+                // 第四階段：最亮狀態維持 5 秒，隨後 5 秒緩慢變暗回歸原本閃爍
                 setTimeout(() => {
-                    // 緩慢變暗恢復 (5s)
                     starElements.forEach(star => {
                         star.style.opacity = '';
                         star.style.transform = '';
@@ -120,7 +177,7 @@
                 }, 5000); 
 
             }, 2000);
-        }, 5000);
+        }, 5000); // 初始停留 5 秒後啟動轉折
     </script>
 </body>
 </html>
