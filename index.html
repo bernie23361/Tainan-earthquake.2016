@@ -5,57 +5,102 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>拾載：重返震撼南台的那一晚</title>
     <style>
-        /* --- 核心與照片輪播 --- */
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background-color: #0b0d13; color: white; font-family: "Noto Sans TC", sans-serif; overflow: hidden; }
+        /* 1. 核心樣式 */
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background-color: #0b0d13; color: white;
+            font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+            overflow: hidden;
+        }
+
+        /* 2. 照片輪播層 */
         #slideshow { position: fixed; inset: 0; z-index: 0; background: #0b0d13; }
-        .slide { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0; transition: opacity 3s ease-in-out; filter: brightness(0.25) contrast(1.1) blur(1.5px); }
+        .slide {
+            position: absolute; inset: 0;
+            background-size: cover; background-position: center;
+            opacity: 0; transition: opacity 3s ease-in-out;
+            filter: brightness(0.25) contrast(1.1) blur(1.5px);
+        }
         .slide.active { opacity: 0.3; }
 
-        /* --- 117 顆星辰 --- */
-        #stars-container { position: fixed; inset: -100px; z-index: 1; pointer-events: none; }
-        .star { position: absolute; background: #fff; border-radius: 50%; opacity: 0.4; animation: twinkle var(--duration) infinite ease-in-out; transition: opacity 5s ease, transform 5s ease, box-shadow 5s ease; }
-        @keyframes twinkle { 0%, 100% { opacity: 0.3; transform: scale(1); } 50% { opacity: 0.8; transform: scale(1.2); } }
+        /* 3. 117 顆星辰層 */
+        #stars-container { 
+            position: fixed; inset: -100px; z-index: 1; 
+            pointer-events: none; will-change: transform; 
+        }
+        .star {
+            position: absolute; background: #fff; border-radius: 50%; opacity: 0.4;
+            animation: twinkle var(--duration) infinite ease-in-out;
+            transition: opacity 5s ease, transform 5s ease, box-shadow 5s ease;
+        }
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.2); }
+        }
 
-        /* --- 內容佈局 --- */
-        .content { position: relative; z-index: 10; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20px; }
-        .event-time { color: #d4af37; font-size: 1.15rem; letter-spacing: 0.4rem; margin-bottom: 25px; animation: golden-twinkle 4s infinite ease-in-out; }
-        @keyframes golden-twinkle { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; text-shadow: 0 0 15px #d4af37; } }
-        h1 { font-size: clamp(2.2rem, 8vw, 4.2rem); letter-spacing: 0.7rem; margin: 0; font-weight: 900; text-shadow: 0 0 40px #000; }
+        /* 4. 內容佈局 */
+        .content {
+            position: relative; z-index: 10;
+            height: 100vh; display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            text-align: center; padding: 20px;
+        }
 
-        /* --- 副標題與黃絲帶邏輯 --- */
-        .slogan-container { height: 150px; margin-top: 35px; display: flex; align-items: flex-start; justify-content: center; }
+        .event-time {
+            color: #d4af37; font-size: 1.15rem; letter-spacing: 0.4rem;
+            margin-bottom: 25px; animation: golden-twinkle 4s infinite ease-in-out;
+        }
+        @keyframes golden-twinkle {
+            0%, 100% { opacity: 0.6; text-shadow: 0 0 5px #d4af37; }
+            50% { opacity: 1; text-shadow: 0 0 15px #d4af37; }
+        }
+
+        h1 {
+            font-size: clamp(2.2rem, 8vw, 4.2rem); 
+            letter-spacing: 0.7rem; margin: 0;
+            font-weight: 900; 
+            text-shadow: 0 0 40px rgba(0, 0, 0, 1);
+        }
+
+        /* 5. 副標題與黃絲帶轉換邏輯 */
+        .slogan-container { height: 160px; margin-top: 35px; display: flex; align-items: flex-start; }
         
         #slogan-text {
-            font-size: 1.1rem;
-            line-height: 2;
+            font-size: 1.1rem; 
+            line-height: 2.2; 
             text-align: left;
             padding-left: 25px;
             transition: all 2s ease-in-out;
-            /* 初始狀態：金色直線 */
+            /* 初始：金色直線 */
             border-left: 2px solid #d4af37;
         }
 
-        /* 當切換到 117 條生命時，觸發黃絲帶樣式 */
+        /* 切換至黃絲帶模式 */
         #slogan-text.ribbon-mode {
-            border-left: 0px solid transparent; /* 移除直線 */
-            padding-left: 40px; /* 為絲帶留空間 */
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23d4af37"><path d="M12,2c-3.3,0-6,2.7-6,6c0,2.2,1.2,4.1,3,5.2V22l3-3l3,3V13.2c1.8-1.1,3-3,3-5.2C18,4.7,15.3,2,12,2z M12,11c-1.7,0-3-1.3-3-3s1.3-3,3-3s3,1.3,3,3S13.7,11,12,11z"/></svg>');
+            border-left: 0px solid transparent;
+            padding-left: 55px; /* 為 icon 留空間 */
+            background-image: url('assets/ribbon.png'); /* 請確保檔案路徑正確 */
             background-repeat: no-repeat;
-            background-position: left top;
-            background-size: 30px; /* 絲帶大小 */
+            background-position: left center;
+            background-size: 40px;
         }
 
         .fade-out { opacity: 0 !important; }
 
-        .enter-btn { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.25); color: white; padding: 14px 45px; cursor: pointer; backdrop-filter: blur(8px); margin-top: 30px; letter-spacing: 0.3rem; transition: 0.5s; }
+        .enter-btn {
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.25);
+            color: white; padding: 14px 45px; cursor: pointer;
+            backdrop-filter: blur(8px); margin-top: 30px;
+            letter-spacing: 0.3rem; transition: 0.5s;
+        }
         .enter-btn:hover { background: #d4af37; color: #000; box-shadow: 0 0 20px rgba(212, 175, 55, 0.4); }
     </style>
 </head>
 <body>
 
     <div id="slideshow">
-        <div class="slide active" style="background-image: url('https://photo.ardswc.gov.tw/api/Media/637579817545766630/facebook?r=639038600489536854');"></div>
-        <div class="slide" style="background-image: url('https://photo.ardswc.gov.tw/api/Media/637579816952952614/facebook?r=639038602958658272');"></div>
+        <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?q=80&w=2071');"></div>
+        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1506318137071-a8e063b4999d?q=80&w=2070');"></div>
     </div>
 
     <div id="stars-container"></div>
@@ -63,30 +108,32 @@
     <div class="content">
         <div class="event-time">2016 . 02 . 06 — 03:57 AM</div>
         <h1>拾載：重返震撼南台的那一晚</h1>
+        
         <div class="slogan-container">
             <div id="slogan-text">十年前...這座島嶼，在時隔 17 年後的黑夜裡，再次發生了劇烈的晃動。<br>那一刻，全台甦醒，記憶留下了痕跡。<br>我們之所以選擇記得，那是因為，記得就是一種前行。</div>
         </div>
+        
         <button class="enter-btn">拾起記憶</button>
     </div>
 
     <script>
-        const starsContainer = document.getElementById('stars-container');
+        // 1. 生成星辰
+        const container = document.getElementById('stars-container');
         const starElements = [];
-
         for (let i = 0; i < 117; i++) {
             const star = document.createElement('div');
             star.className = 'star';
             star.style.left = Math.random() * 100 + '%';
             star.style.top = Math.random() * 100 + '%';
             const size = Math.random() * 1.5 + 1;
-            star.style.width = size + 'px';
-            star.style.height = size + 'px';
+            star.style.width = size + 'px'; star.style.height = size + 'px';
             const duration = (Math.random() * 3 + 2) + 's';
             star.style.setProperty('--duration', duration);
-            starsContainer.appendChild(star);
+            container.appendChild(star);
             starElements.push(star);
         }
 
+        // 2. 照片輪播 (8秒)
         let currentSlide = 0;
         const slides = document.querySelectorAll('.slide');
         setInterval(() => {
@@ -95,24 +142,26 @@
             slides[currentSlide].classList.add('active');
         }, 8000);
 
+        // 3. 視差效果
         window.addEventListener('mousemove', (e) => {
             const moveX = (window.innerWidth / 2 - e.clientX) * 0.015;
             const moveY = (window.innerHeight / 2 - e.clientY) * 0.015;
-            starsContainer.style.transform = `translate3d(${moveX}px, ${moveY}px, 0)`;
+            container.style.transform = `translate3d(${moveX}px, ${moveY}px, 0)`;
         });
 
+        // 4. 文字與星辰共鳴邏輯 (5-5-5秒)
         const sloganElement = document.getElementById('slogan-text');
         const finalSlogan = "這片星空，為 0206 地震中的 117 條生命而存在！";
 
         setTimeout(() => {
             sloganElement.classList.add('fade-out');
+
             setTimeout(() => {
                 sloganElement.innerHTML = finalSlogan;
-                
-                // --- 關鍵轉場：切換至黃絲帶模式 ---
-                sloganElement.classList.add('ribbon-mode');
+                sloganElement.classList.add('ribbon-mode'); // 切換為黃絲帶
                 sloganElement.classList.remove('fade-out');
 
+                // 緩慢亮起 (5s)
                 starElements.forEach(star => {
                     star.style.animation = 'none'; 
                     star.style.opacity = '1';
@@ -120,6 +169,7 @@
                     star.style.boxShadow = '0 0 35px 5px rgba(255,255,255,0.9)';
                 });
 
+                // 維持 5s，隨後 5s 漸暗
                 setTimeout(() => {
                     starElements.forEach(star => {
                         star.style.opacity = '';
@@ -129,6 +179,7 @@
                         star.style.animation = `twinkle ${dur} infinite ease-in-out`;
                     });
                 }, 5000); 
+
             }, 2000);
         }, 5000);
     </script>
