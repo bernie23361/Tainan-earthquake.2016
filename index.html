@@ -5,49 +5,156 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>拾載：重返震撼南台的那一夜</title>
-    <link rel="stylesheet" href="style.css">
+    <title>拾載：重返震撼南台的那一晚</title>
+    <style>
+        /* 1. 視覺核心樣式 */
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #0b0d13; /* 深邃的夜空底色 */
+            color: white;
+            font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+            overflow: hidden; /* 防止滾動干擾 */
+        }
+
+        /* 2. 背景輪播層 (Opacity 切換最順暢) */
+        #slideshow {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+        }
+
+        .slide {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 3s ease-in-out;
+            background-color: #0b0d13;
+        }
+
+        .slide.active {
+            opacity: 0.25; /* 保持暗色調，突顯文字與星辰 */
+        }
+
+        /* 3. 117 顆星辰層 */
+        #stars-container {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            background: #fff;
+            border-radius: 50%;
+            opacity: 0.4;
+            animation: twinkle var(--duration) infinite ease-in-out;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.9; transform: scale(1.3); }
+        }
+
+        /* 4. 文字內容層 */
+        .content {
+            position: relative;
+            z-index: 10;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            letter-spacing: 0.5rem;
+            margin-bottom: 10px;
+            font-weight: 300;
+            /* 這裡可以換成你的书法字體 */
+        }
+
+        .slogan {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            border-left: 2px solid #d4af37; /* 金色刻痕線條 */
+            padding-left: 15px;
+            margin: 20px 0;
+        }
+
+        .enter-btn {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 15px 40px;
+            font-size: 1rem;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+            transition: 0.4s;
+            margin-top: 30px;
+        }
+
+        .enter-btn:hover {
+            background: #d4af37;
+            color: black;
+            border-color: #d4af37;
+        }
+    </style>
 </head>
 <body>
-    <div id="hero-bg"></div>
 
-    <div id="overlay" class="overlay">
-        <div class="card-container">
-            <div id="age-selector">
-                <h2>歡迎來到拾載</h2>
-                <p>請選擇您的記憶視角：</p>
-                <button onclick="showContent('young')">我是青少年/小朋友</button>
-                <button onclick="showContent('adult')">我是大人/當時有印象</button>
-            </div>
-            
-            <div id="card-content" class="hidden">
-                <h3 id="card-title"></h3>
-                <p id="card-text"></p>
-                <button class="enter-btn" onclick="enterSite()">拾起記憶</button>
-            </div>
-        </div>
+    <div id="slideshow">
+        <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?q=80&w=2071');"></div>
+        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1506318137071-a8e063b4999d?q=80&w=2070');"></div>
     </div>
-    // 星辰動畫、輪播畫面
-    <div id="site-wrapper">
+
     <div id="stars-container"></div>
-    
-    <div id="slideshow-container">
-        <div class="slide active" style="background-image: url('assets/bg1.webp');"></div>
-        <div class="slide" style="background-image: url('assets/bg2.webp');"></div>
-        <div class="slide" style="background-image: url('assets/bg3.webp');"></div>
-        <div class="overlay-dark"></div>
+
+    <div class="content">
+        <p style="letter-spacing: 0.8rem; opacity: 0.6; font-size: 0.8rem;">D E C A D E &nbsp; A R C H I V E</p>
+        <h1>拾載：重返震撼南台的那一晚</h1>
+        <p class="slogan">那是維冠大樓倒下的瞬間，也是台南人共同記憶的裂痕。<br>十年過去，我們拾起碎片，記載不曾遺忘的韌性。</p>
+        <button class="enter-btn">開啟檔案庫</button>
     </div>
 
-    </div>
+    <script>
+        // 1. 生成 117 顆星辰
+        const starsContainer = document.getElementById('stars-container');
+        for (let i = 0; i < 117; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            
+            // 隨機分佈
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            
+            // 隨機大小
+            const size = Math.random() * 2 + 1;
+            star.style.width = size + 'px';
+            star.style.height = size + 'px';
+            
+            // 隨機閃爍速度
+            star.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
+            
+            starsContainer.appendChild(star);
+        }
 
-    <main id="main-site" class="hidden">
-        <header>
-            <p class="decade-archive">D E C A D E  A R C H I V E</p>
-            <h1>0206 / 重返震撼南台</h1>
-            <p class="slogan">記憶的刻痕，是重生的起點。</p>
-        </header>
-        </main>
-
-    <script src="script.js"></script>
+        // 2. 簡單的輪播切換
+        let slides = document.querySelectorAll('.slide');
+        let currentIndex = 0;
+        setInterval(() => {
+            slides[currentIndex].classList.remove('active');
+            currentIndex = (currentIndex + 1) % slides.length;
+            slides[currentIndex].classList.add('active');
+        }, 6000); // 6秒換一次圖
+    </script>
 </body>
 </html>
