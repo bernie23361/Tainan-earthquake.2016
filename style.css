@@ -61,3 +61,51 @@ button:hover {
     background: var(--accent-color);
     color: black;
 }
+/* 117 顆星辰的樣式 */
+#stars-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.5;
+    animation: twinkle var(--duration) infinite ease-in-out;
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.2; transform: scale(1); }
+    50% { opacity: 0.8; transform: scale(1.2); }
+}
+
+/* 輪播背景樣式 */
+#slideshow-container {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background: #0b0d13;
+}
+
+.slide {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity 2s ease-in-out;
+}
+
+.slide.active { opacity: 0.3; } /* 保持低亮度以突顯文字 */
+
+.overlay-dark {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle, transparent 20%, #0b0d13 100%);
+}
