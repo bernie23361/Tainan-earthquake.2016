@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>拾載：重返震撼南台的那一晚</title>
     <style>
-        /* --- 核心樣式 --- */
+        /* 1. 核心樣式 - 確保背景深邃 */
         body, html {
             margin: 0;
             padding: 0;
@@ -14,10 +14,10 @@
             background-color: #0b0d13;
             color: white;
             font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
-            overflow-x: hidden;
+            overflow: hidden;
         }
 
-        /* --- 背景與 117 顆星辰 --- */
+        /* 2. 背景輪播與 117 顆星辰 */
         #slideshow { position: fixed; inset: 0; z-index: 0; }
         .slide {
             position: absolute;
@@ -30,10 +30,10 @@
 
         #stars-container { 
             position: fixed; 
-            inset: -50px; /* 稍微向外擴張，防止視差位移時邊緣漏光 */
+            inset: -50px; /* 擴張邊界以支援視差移動 */
             z-index: 1; 
             pointer-events: none;
-            will-change: transform; /* 提醒瀏覽器優化效能 */
+            will-change: transform;
         }
 
         .star {
@@ -49,19 +49,7 @@
             50% { opacity: 0.9; transform: scale(1.2); }
         }
 
-        /* --- 文字與內容層 --- */
-        .content {
-            position: relative;
-            z-index: 10;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 20px;
-        }
-
+        /* 3. 金色時間標示 - 微閃爍 */
         .event-time {
             color: #d4af37;
             font-size: 1.15rem;
@@ -76,11 +64,28 @@
             50% { opacity: 1; text-shadow: 0 0 15px #d4af37, 0 0 25px rgba(212, 175, 55, 0.5); }
         }
 
+        /* 4. 主標題 - 強化粗度與陰影 */
         h1 {
-            font-size: clamp(2rem, 8vw, 3.8rem); /* 響應式字體大小 */
-            letter-spacing: 0.6rem;
+            font-size: clamp(2.2rem, 8vw, 4.2rem); 
+            letter-spacing: 0.7rem;               
             margin: 0 0 15px 0;
-            font-weight: 300;
+            font-weight: 900; /* 極粗 */
+            line-height: 1.2;
+            text-shadow: 0px 0px 15px rgba(255, 255, 255, 0.2), 0px 0px 40px rgba(0, 0, 0, 1);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* 5. 內容排版 */
+        .content {
+            position: relative;
+            z-index: 10;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
         }
 
         .slogan {
@@ -132,7 +137,7 @@
     </div>
 
     <script>
-        // --- 1. 生成 117 顆星辰 ---
+        // --- 生成 117 顆星辰 ---
         const starsContainer = document.getElementById('stars-container');
         for (let i = 0; i < 117; i++) {
             const star = document.createElement('div');
@@ -143,28 +148,15 @@
             star.style.width = size + 'px';
             star.style.height = size + 'px';
             star.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
-            
-            // 給每顆星隨機深度權重 (用於視差位移差異化)
-            star.dataset.depth = Math.random() * 0.05 + 0.02;
-            
             starsContainer.appendChild(star);
         }
 
-        // --- 2. 視差效果：監聽滑鼠與捲動 ---
-        const handleParallax = (e) => {
-            const x = (e.clientX || 0);
-            const y = (e.clientY || window.scrollY);
-            
-            // 透過變換 container 達成整體微移，效能較佳
-            // 若想讓每顆星位移不同，則改為遍歷 star
-            const moveX = (window.innerWidth / 2 - x) * 0.01;
-            const moveY = (window.innerHeight / 2 - y) * 0.01;
-            
+        // --- 視差效果邏輯 ---
+        window.addEventListener('mousemove', (e) => {
+            const moveX = (window.innerWidth / 2 - e.clientX) * 0.015;
+            const moveY = (window.innerHeight / 2 - e.clientY) * 0.015;
             starsContainer.style.transform = `translate3d(${moveX}px, ${moveY}px, 0)`;
-        };
-
-        window.addEventListener('mousemove', handleParallax);
-        window.addEventListener('scroll', handleParallax);
+        });
     </script>
 </body>
 </html>
