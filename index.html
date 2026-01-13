@@ -15,7 +15,7 @@
             --stone-white: #e8e8e8;
         }
 
-        /* 0. 文字選取：紅色螢光筆質感 */
+        /* 0. 文字選取效果 */
         ::selection {
             background-color: var(--red-select);
             color: #ffffff;
@@ -42,11 +42,11 @@
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
 
-        /* 3. 背景輪播與光暈 */
+        /* 3. 背景輪播與漸層遮罩 */
         #slideshow { position: fixed; inset: 0; z-index: 0; background: #1a1c25; } 
         #slideshow::after {
             content: ""; position: absolute; inset: 0; z-index: 2;
-            background: radial-gradient(circle at 30% 50%, rgba(20, 25, 35, 0) 0%, rgba(18, 20, 26, 0.9) 100%);
+            background: radial-gradient(circle at 30% 50%, rgba(20, 25, 35, 0) 0%, rgba(18, 20, 26, 0.92) 100%);
         }
 
         .slide { 
@@ -70,16 +70,11 @@
             width: 60vw;
             max-width: 1200px;
             z-index: 3;
-            opacity: 0.2;
-            filter: invert(1) brightness(1.6) contrast(1.3) url(#balanced-weathering);
+            opacity: 0.18;
+            filter: invert(1) brightness(1.5) contrast(1.2) url(#balanced-weathering);
             pointer-events: none;
             user-select: none;
             animation: mapEntranceLarge 4.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        @keyframes mapEntranceLarge {
-            0% { opacity: 0; transform: translateY(-47%) scale(0.92); filter: invert(1) blur(10px); }
-            100% { opacity: 0.2; transform: translateY(-50%) scale(1); filter: invert(1) brightness(1.6) contrast(1.3) url(#balanced-weathering); }
         }
 
         /* 5. 佈局細節 */
@@ -90,11 +85,6 @@
             animation: layoutEntrance 2s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        @keyframes layoutEntrance {
-            0% { opacity: 0; transform: translateX(-30px); }
-            100% { opacity: 1; transform: translateX(0); }
-        }
-
         /* 背景大數字 */
         .bg-number {
             position: absolute; left: 2%; top: 50%; transform: translateY(-50%);
@@ -103,11 +93,6 @@
             background: repeating-linear-gradient(45deg, transparent, transparent 15px, rgba(212, 175, 55, 0.02) 15px, rgba(212, 175, 55, 0.02) 16px);
             background-clip: text; -webkit-background-clip: text;
             animation: floatNumber 12s ease-in-out infinite;
-        }
-
-        @keyframes floatNumber {
-            0%, 100% { transform: translateY(-50%) translateX(0) rotate(0deg); }
-            50% { transform: translateY(-52%) translateX(10px) rotate(1deg); }
         }
 
         /* 標題容器動畫 */
@@ -121,14 +106,13 @@
         }
 
         @keyframes seismicReactionSlow {
-            0% { transform: translateX(0); }
+            0%, 100% { transform: translateX(0); }
             10% { transform: translateX(-15px); }
             25% { transform: translateX(12px); }
             40% { transform: translateX(-10px); }
             55% { transform: translateX(8px); }
             70% { transform: translateX(-4px); }
             85% { transform: translateX(2px); }
-            100% { transform: translateX(0); }
         }
 
         @keyframes subtlePeriodicShake {
@@ -139,12 +123,6 @@
             98% { transform: translateX(-0.3px); }
         }
 
-        .title-group {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-        }
-        
         h1.vertical-title {
             font-family: "Noto Serif TC", serif;
             writing-mode: vertical-rl;
@@ -162,43 +140,23 @@
         }
 
         .seismic-wave-divider {
-            position: absolute;
-            left: -20px; 
-            top: 0;
-            width: 40px;
-            height: 100%; 
-            z-index: 12;
-            pointer-events: none;
+            position: absolute; left: -20px; top: 0; width: 40px; height: 100%; z-index: 12;
         }
 
         .seismic-path {
-            fill: none;
-            stroke: var(--gold);
-            stroke-width: 1.2;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            stroke-dasharray: 2500;
-            stroke-dashoffset: 2500;
-            filter: drop-shadow(0 0 5px var(--gold));
-            animation: drawPulseShort 5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-            opacity: 0.7;
+            fill: none; stroke: var(--gold); stroke-width: 1.2; stroke-dasharray: 2500; stroke-dashoffset: 2500;
+            filter: drop-shadow(0 0 5px var(--gold)); animation: drawPulseShort 5s forwards;
         }
 
         @keyframes drawPulseShort {
             0% { stroke-dashoffset: 2500; opacity: 0; }
-            15% { opacity: 0.6; }
             100% { stroke-dashoffset: 0; opacity: 0.7; }
         }
         
-        .seismic-base-line {
-            stroke: rgba(255, 255, 255, 0.12);
-            stroke-width: 0.6;
-        }
+        .seismic-base-line { stroke: rgba(255, 255, 255, 0.12); stroke-width: 0.6; }
 
         .full-date-time {
-            font-size: 1.4rem; font-weight: 700; color: var(--gold);
-            margin-bottom: 15px; letter-spacing: 0.3rem;
-            text-shadow: 0 0 12px rgba(212, 175, 55, 0.5);
+            font-size: 1.4rem; font-weight: 700; color: var(--gold); margin-bottom: 15px; letter-spacing: 0.3rem;
             animation: timeTextGlow 4s ease-in-out infinite;
         }
 
@@ -208,203 +166,137 @@
         }
 
         .main-sub-text {
-            font-family: "Noto Serif TC", serif;
-            font-size: 3.2rem; font-weight: 900; letter-spacing: 0.8rem;
-            white-space: nowrap; margin-bottom: 40px;
-            color: var(--stone-white);
-            filter: url(#balanced-weathering);
-            text-shadow: 1px 1px 4px rgba(0,0,0,0.4);
+            font-family: "Noto Serif TC", serif; font-size: 3.2rem; font-weight: 900; letter-spacing: 0.8rem;
+            white-space: nowrap; margin-bottom: 40px; color: var(--stone-white); filter: url(#balanced-weathering);
         }
 
         #slogan-text {
-            font-size: 1.1rem; line-height: 2.5; text-align: left;
-            transition: all 2.5s cubic-bezier(0.19, 1, 0.22, 1);
-            color: rgba(255, 255, 255, 0.8);
-            letter-spacing: 0.05rem;
-            max-width: 600px;
+            font-size: 1.1rem; line-height: 2.5; text-align: left; color: rgba(255, 255, 255, 0.8);
+            letter-spacing: 0.05rem; max-width: 600px;
+            transition: opacity 1.5s ease;
         }
 
-        /* 按鈕設計 */
         .btn-group { display: flex; gap: 30px; margin-top: 20px; flex-wrap: wrap; }
 
         .enter-btn {
-            position: relative;
-            background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.18);
-            color: rgba(255,255,255,0.9); padding: 18px 45px; cursor: pointer;
-            backdrop-filter: blur(15px);
-            letter-spacing: 0.4rem; transition: 0.5s all cubic-bezier(0.4, 0, 0.2, 1);
-            font-size: 1rem; font-weight: 700; min-width: 230px;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
+            position: relative; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.18);
+            color: rgba(255,255,255,0.9); padding: 18px 45px; cursor: pointer; backdrop-filter: blur(15px);
+            letter-spacing: 0.4rem; transition: 0.5s; font-size: 1rem; font-weight: 700; min-width: 230px;
+            display: flex; align-items: center; justify-content: center; text-decoration: none;
         }
 
-        .btn-arrow-icon {
-            width: 20px; height: 20px; margin-left: 15px; fill: none;
-            stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .enter-btn:hover {
-            border-color: var(--gold); color: var(--gold);
-            box-shadow: 0 0 25px rgba(212, 175, 55, 0.2); transform: translateY(-2px);
-        }
-
+        .btn-arrow-icon { width: 20px; height: 20px; margin-left: 15px; fill: none; stroke: currentColor; stroke-width: 2; transition: 0.4s; }
+        .enter-btn:hover { border-color: var(--gold); color: var(--gold); box-shadow: 0 0 25px rgba(212, 175, 55, 0.2); transform: translateY(-2px); }
         .enter-btn:hover .btn-arrow-icon { transform: translateX(10px); }
 
-        /* 頁底與語言切換 */
-        .header-lang-switcher {
-            position: fixed; top: 35px; right: 8%; z-index: 100; display: flex; gap: 20px;
-        }
-        .header-lang-switcher a {
-            color: rgba(255, 255, 255, 0.4); text-decoration: none; font-size: 0.75rem;
-            letter-spacing: 0.12rem; transition: all 0.3s ease; cursor: pointer;
-        }
+        /* 導覽固定定位 */
+        .header-lang-switcher { position: fixed; top: 35px; right: 8%; z-index: 100; display: flex; gap: 20px; }
+        .header-lang-switcher a { color: rgba(255, 255, 255, 0.4); text-decoration: none; font-size: 0.75rem; letter-spacing: 0.12rem; transition: 0.3s; cursor: pointer; }
         .header-lang-switcher a.active { color: rgba(255, 255, 255, 0.85); font-weight: 700; }
-        
-        .footer-copyright {
-            position: fixed; bottom: 35px; left: 8%; z-index: 15; font-size: 0.75rem;
-            color: rgba(255, 255, 255, 0.35); letter-spacing: 0.15rem; text-transform: uppercase;
-            pointer-events: none; user-select: none;
-        }
-        .footer-links {
-            position: fixed; bottom: 35px; right: 8%; z-index: 15; display: flex; gap: 30px;
-        }
-        .footer-links a { color: rgba(255, 255, 255, 0.35); text-decoration: none; font-size: 0.75rem; letter-spacing: 0.12rem; transition: 0.3s; }
+        .footer-copyright { position: fixed; bottom: 35px; left: 8%; z-index: 15; font-size: 0.75rem; color: rgba(255, 255, 255, 0.35); letter-spacing: 0.15rem; text-transform: uppercase; pointer-events: none; }
+        .footer-links { position: fixed; bottom: 35px; right: 8%; z-index: 15; display: flex; gap: 30px; }
+        .footer-links a { color: rgba(255, 255, 255, 0.35); text-decoration: none; font-size: 0.75rem; letter-spacing: 0.12rem; transition: 0.3s; cursor: pointer; }
         .footer-links a:hover, .header-lang-switcher a:hover { color: var(--gold); }
 
-        /* 彈出卡片 */
-        .modal-overlay {
-            position: fixed; inset: 0; background: rgba(0, 0, 0, 0.65); backdrop-filter: blur(12px);
-            z-index: 200; display: flex; align-items: center; justify-content: center;
-            opacity: 0; pointer-events: none; transition: opacity 0.6s cubic-bezier(0.19, 1, 0.22, 1); padding: 20px;
+        /* ✨ 卡片系統與客製化拉動條 */
+        .modal-overlay { 
+            position: fixed; inset: 0; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(15px); 
+            z-index: 200; display: flex; align-items: center; justify-content: center; 
+            opacity: 0; pointer-events: none; transition: 0.6s cubic-bezier(0.19, 1, 0.22, 1); 
+            padding: 20px; 
         }
         .modal-overlay.active { opacity: 1; pointer-events: all; }
-        .construction-card {
-            position: relative; background: rgba(20, 25, 35, 0.85); border: 1px solid rgba(212, 175, 55, 0.35);
-            padding: 70px 50px; width: 100%; max-width: 520px; text-align: center; border-radius: 24px;
-            box-shadow: 0 0 60px rgba(0, 0, 0, 0.6); transform: scale(0.9);
-            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .modal-overlay.active .construction-card { transform: scale(1); }
-        .card-close-x { position: absolute; top: 20px; right: 20px; width: 28px; height: 28px; cursor: pointer; color: rgba(255, 255, 255, 0.4); }
 
-        /* ✨ 橫式翻轉提醒 (Orientation Reminder) */
-        .orientation-reminder {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: var(--deep-bg);
-            z-index: 9999;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 40px;
-            color: var(--stone-white);
+        .content-card { 
+            position: relative; background: rgba(20, 25, 35, 0.9); border: 1px solid rgba(212, 175, 55, 0.3); 
+            padding: 55px 65px; width: 100%; max-width: 680px; border-radius: 24px; 
+            box-shadow: 0 0 80px rgba(0, 0, 0, 0.8); transform: scale(0.95) translateY(20px); 
+            transition: 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            max-height: 85vh; 
+            overflow-y: auto;
+            scrollbar-gutter: stable;
         }
 
-        .orientation-reminder svg {
-            width: 64px;
-            height: 64px;
-            margin-bottom: 30px;
-            color: var(--gold);
-            animation: phoneRotate 2.5s infinite ease-in-out;
+        /* ✨ 客製化拉動條樣式 (結合進卡片內) */
+        .content-card::-webkit-scrollbar {
+            width: 5px; /* 極細設計 */
+        }
+        .content-card::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 10px;
+            margin: 30px 0; /* 讓拉動條不頂到圓角邊緣 */
+        }
+        .content-card::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+            border-radius: 10px;
+            box-shadow: 0 0 8px rgba(212, 175, 55, 0.4);
+        }
+        .content-card::-webkit-scrollbar-thumb:hover {
+            background: var(--gold);
+            box-shadow: 0 0 12px rgba(212, 175, 55, 0.6);
         }
 
-        @keyframes phoneRotate {
-            0% { transform: rotate(90deg); }
-            50% { transform: rotate(0deg); }
-            100% { transform: rotate(90deg); }
+        .modal-overlay.active .content-card { transform: scale(1) translateY(0); }
+
+        .card-close-x { 
+            position: absolute; top: 25px; right: 25px; width: 32px; height: 32px; 
+            cursor: pointer; color: rgba(255, 255, 255, 0.4); transition: 0.3s;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .card-close-x:hover { color: var(--gold); transform: rotate(90deg); }
+        .card-close-x svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+
+        .card-title { 
+            font-family: "Noto Serif TC", serif; font-size: 2.2rem; color: var(--stone-white); 
+            margin-bottom: 30px; letter-spacing: 0.4rem; font-weight: 700; text-align: center;
+        }
+        .card-desc { 
+            font-size: 1rem; color: rgba(255, 255, 255, 0.85); line-height: 2.4; 
+            text-align: justify; margin-bottom: 35px;
+        }
+        .card-desc strong { color: var(--gold); font-weight: 700; }
+        .card-desc h3 { 
+            font-family: "Noto Serif TC", serif; font-size: 1.35rem; color: var(--gold); 
+            margin-top: 35px; margin-bottom: 12px; letter-spacing: 0.15rem; border-left: 2px solid var(--gold); padding-left: 15px;
         }
 
-        .orientation-reminder h2 {
-            font-family: "Noto Serif TC", serif;
-            font-size: 1.8rem;
-            letter-spacing: 0.3rem;
-            margin-bottom: 15px;
+        .close-card-btn-container { text-align: center; padding-top: 20px; }
+        .close-card-btn { 
+            color: var(--gold); text-decoration: none; font-size: 0.95rem; 
+            letter-spacing: 0.3rem; border-bottom: 1px solid transparent; 
+            cursor: pointer; transition: 0.3s; font-weight: 700; padding-bottom: 5px;
         }
+        .close-card-btn:hover { border-color: var(--gold); text-shadow: 0 0 10px var(--gold); }
 
-        .orientation-reminder p {
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.5);
-            letter-spacing: 0.1rem;
-        }
+        /* 翻轉提醒 */
+        .orientation-reminder { display: none; position: fixed; inset: 0; background: var(--deep-bg); z-index: 9999; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px; color: var(--stone-white); }
+        .orientation-reminder svg { width: 64px; height: 64px; margin-bottom: 30px; color: var(--gold); animation: phoneRotate 2.5s infinite; }
+        @keyframes phoneRotate { 0%, 100% { transform: rotate(90deg); } 50% { transform: rotate(0deg); } }
 
-        /* 手機版響應式樣式優化 */
+        /* 手機響應式修正 */
         @media (max-width: 768px) {
-            /* 橫式提醒觸發條件 */
-            @media (orientation: landscape) {
-                .orientation-reminder { display: flex; }
-            }
-
-            .main-layout {
-                padding-left: 5%; padding-right: 5%; justify-content: flex-start; 
-                padding-top: 80px; align-items: center;
-                height: auto; min-height: 100vh; overflow-y: auto;
-            }
-
-            .bg-number {
-                font-size: 10rem; left: 50%; transform: translateX(-50%) translateY(-50%); opacity: 0.2;
-            }
-
+            @media (orientation: landscape) { .orientation-reminder { display: flex; } }
+            .main-layout { padding: 80px 5% 0; align-items: center; height: auto; min-height: 100vh; overflow-y: auto; text-align: center; }
+            .bg-number { font-size: 10rem; left: 50%; transform: translate(-50%, -50%); opacity: 0.15; }
             .title-wrapper { flex-direction: column; align-items: center; width: 100%; }
-            .title-group { align-items: center; width: 100%; }
-
-            h1.vertical-title {
-                writing-mode: horizontal-tb; 
-                font-size: 4rem; letter-spacing: 0.8rem;
-                margin-bottom: 25px; padding-left: 0.8rem;
-                width: 100%; text-align: center;
-            }
-
-            .text-stack {
-                margin-left: 0; padding-left: 0; width: 100%;
-                align-items: center; box-sizing: border-box;
-            }
-
+            h1.vertical-title { writing-mode: horizontal-tb; font-size: 3.5rem; letter-spacing: 0.5rem; margin-bottom: 25px; text-align: center; width: 100%; }
+            .text-stack { margin: 0; padding: 0; align-items: center; width: 100%; }
             .seismic-wave-divider { display: none; }
-
-            .full-date-time { text-align: center; font-size: 1.1rem; letter-spacing: 0.15rem; }
-            .main-sub-text {
-                font-size: 1.6rem; letter-spacing: 0.3rem; white-space: normal; 
-                line-height: 1.4; text-align: center;
-            }
-
-            #slogan-text {
-                font-size: 0.95rem; line-height: 2; max-width: 100%; text-align: center;
-            }
-
-            .btn-group { gap: 15px; justify-content: center; width: 100%; }
-            .enter-btn { min-width: 100%; padding: 15px 25px; }
-
-            .header-lang-switcher { top: 20px; right: 5%; }
-
-            .footer-copyright {
-                position: relative; left: auto; bottom: auto; margin-top: 60px; 
-                width: 100%; display: block; text-align: center; pointer-events: auto;
-            }
-
-            .footer-links {
-                position: relative; right: auto; bottom: auto; 
-                margin-top: 15px; margin-bottom: 50px; 
-                width: 100%; flex-direction: row; justify-content: center; flex-wrap: wrap; gap: 20px;
-            }
-            
-            .footer-links a { font-size: 0.7rem; }
-
-            .tainan-map-overlay {
-                width: 130vw; right: 50%; transform: translateX(50%) translateY(-50%); opacity: 0.05;
-            }
+            .main-sub-text { font-size: 1.4rem; letter-spacing: 0.15rem; white-space: normal; line-height: 1.5; }
+            #slogan-text { font-size: 0.9rem; text-align: center; line-height: 1.8; }
+            .btn-group { justify-content: center; width: 100%; }
+            .enter-btn { min-width: 100%; padding: 15px 20px; }
+            .footer-copyright { position: relative; left: auto; bottom: auto; margin-top: 60px; display: block; width: 100%; }
+            .footer-links { position: relative; right: auto; bottom: auto; margin-top: 15px; margin-bottom: 50px; justify-content: center; width: 100%; flex-wrap: wrap; gap: 20px; }
+            .tainan-map-overlay { width: 150vw; right: 50%; transform: translate(50%, -50%); opacity: 0.04; }
+            .content-card { padding: 45px 30px; }
+            .card-title { font-size: 1.6rem; }
         }
-
     </style>
 </head>
 <body>
 
-    <!-- 斑駁濾鏡定義 -->
+    <!-- 斑駁濾鏡 -->
     <svg style="display: none;">
         <filter id="balanced-weathering">
             <feTurbulence type="fractalNoise" baseFrequency="0.06" numOctaves="4" seed="10" result="noise" />
@@ -414,27 +306,24 @@
         </filter>
     </svg>
 
-    <!-- ✨ 橫式翻轉提醒層 -->
+    <!-- 橫式翻轉提醒 -->
     <div class="orientation-reminder">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
-            <path d="M12 18h.01" />
-        </svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="2" width="14" height="20" rx="2" ry="2" /><path d="M12 18h.01" /></svg>
         <h2>請轉回直式視窗</h2>
         <p>「拾載」建議以直式瀏覽以獲得最佳體驗</p>
     </div>
 
-    <!-- 頂欄：語言切換 -->
+    <!-- 導覽選單 -->
     <div class="header-lang-switcher">
         <a class="active">繁中</a>
         <a href="#">EN</a>
     </div>
 
-    <!-- 台南全市地圖 -->
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Tainan_districts_blank.svg/2163px-Tainan_districts_blank.svg.png" 
-         class="tainan-map-overlay" 
-         alt="Tainan Map">
+    <div class="footer-copyright">© 2026 拾載專案團隊．版權所有</div>
+    <div class="footer-links"><a href="#">服務條款</a><a href="#">注意事項</a><a href="#">官方網站</a></div>
 
+    <!-- 台南地圖與顆粒 -->
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Tainan_districts_blank.svg/2163px-Tainan_districts_blank.svg.png" class="tainan-map-overlay" alt="Tainan Map">
     <div class="film-grain"></div>
 
     <div id="slideshow">
@@ -462,151 +351,111 @@
                 
                 <div class="full-date-time">2016 . 02 . 06 — 03:57 AM</div>
                 <div class="main-sub-text">重返撼動南台的那一晚</div>
-                <div class="slogan-container">
-                    <div id="slogan-text">十年前...這座島嶼，在時隔 17 年後的黑夜裡，再次發生了劇烈的晃動。<br>那一刻，全台甦醒，記憶留下了痕跡。<br>我們之所以選擇記得，那是因為，記得就是一種前行。</div>
-                </div>
+                <div id="slogan-text">十年前...這座島嶼，在時隔 17 年後的黑夜裡，再次發生了劇烈的晃動。<br>那一刻，全台甦醒，記憶留下了痕跡。<br>我們之所以選擇記得，那是因為，記得就是一種前行。</div>
                 <div class="btn-group">
-                    <button class="enter-btn">
-                        關於拾載
-                        <svg class="btn-arrow-icon" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                    </button>
-                    <button class="enter-btn" id="return-btn">
-                        重返 0206
-                        <svg class="btn-arrow-icon" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                    </button>
+                    <button class="enter-btn" id="about-btn">關於拾載<svg class="btn-arrow-icon" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+                    <button class="enter-btn" id="return-btn">重返 0206<svg class="btn-arrow-icon" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 頁底版權與連結 -->
-    <div class="footer-copyright">
-        © 2026 拾載專案團隊．版權所有
-    </div>
-
-    <div class="footer-links">
-        <a href="#">服務條款</a>
-        <a href="#">注意事項</a>
-        <a href="#">官方網站</a>
-    </div>
-
-    <!-- 「尚在建構中」彈出卡片 -->
-    <div class="modal-overlay" id="modal-overlay">
-        <div class="construction-card">
-            <div class="card-close-x" id="close-modal-x" aria-label="Close">
-                <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
-            </div>
-            <div class="card-title">尚在建構中</div>
+    <!-- 關於拾載卡片 (內嵌拉動條設計) -->
+    <div class="modal-overlay" id="about-modal">
+        <div class="content-card">
+            <div class="card-close-x" id="close-about-x"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></div>
+            <div class="card-title">「拾載」：關於本計畫</div>
             <div class="card-desc">
+                <p style="text-align: center; color: var(--gold); font-size: 1.15rem; margin-bottom: 35px; text-shadow: 0 0 10px rgba(212,175,55,0.3);">「十載光陰，拾起被地震撼動的生命重量。」</p>
+                
+                2016 年 2 月 6 日，凌晨 3 點 57 分。 當多數人仍沉浸在春節前夕的夢鄉時，一場強震在台南地底深處爆發。那一夜，大地的劇烈搖晃震碎了無數家庭，也讓南台灣陷入了近十年來最沉痛的黑暗。<br><br>
+                《拾載：重返撼動南台的那一晚》 是一個數位沉浸式專題計畫。 「拾載」一詞，既代表地震至今走過的<strong>「十載」光陰</strong>，也象徵我們從破碎瓦礫中<strong>「拾起」</strong>記憶碎片的心路歷程。<br><br>
+                我們透過<strong>「環境音效還原」與「AI 敘事導覽」</strong>，帶領您重新走進歷史現場：
+                
+                <h3>重返 0206</h3>
+                不僅是回放災難，而是透過聲音與視覺的交織，感同身受當時的驚心動魄。讓歷史不再只是冷冰冰的數字，而是活生生的記憶。
+                
+                <h3>記憶拾遺</h3>
+                我們記錄了受災者的重建之路、搜救者的無私奉獻，以及這座城市在傷痛中開出的花朵。每一段口述歷史都是珍貴的拾穗。<br><br>
+                這不是一段關於恐懼的旅程，而是一場關於<strong>「韌性」</strong>的紀錄。 我們相信，遺忘才是真正的消失。透過這場數位導覽，我們邀請您與我們一起，在記憶的長河中，找尋守望相助的微光，並將這份勇氣傳遞到下一個十年。
+            </div>
+            <div class="close-card-btn-container">
+                <a class="close-card-btn" id="close-about-btn">開始拾起記憶</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 尚在建構中卡片 -->
+    <div class="modal-overlay" id="return-modal">
+        <div class="content-card">
+            <div class="card-close-x" id="close-return-x"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></div>
+            <div class="card-title">尚在建構中</div>
+            <div class="card-desc" style="text-align: center;">
                 時光的齒輪正在咬合...<br>
                 我們正在細心打磨這段珍貴的回憶空間，<br>
                 敬請期待這場時光之旅。
             </div>
-            <a class="close-card-btn" id="close-modal-btn">返回首頁</a>
+            <div class="close-card-btn-container">
+                <a class="close-card-btn" id="close-return-btn">返回首頁</a>
+            </div>
         </div>
     </div>
 
     <script>
-        // --- 互動卡片邏輯 ---
-        const returnBtn = document.getElementById('return-btn');
-        const modalOverlay = document.getElementById('modal-overlay');
-        const closeModalBtn = document.getElementById('close-modal-btn');
-        const closeModalX = document.getElementById('close-modal-x');
+        // --- 互動邏輯 ---
+        const aboutBtn = document.getElementById('about-btn'), returnBtn = document.getElementById('return-btn');
+        const aboutModal = document.getElementById('about-modal'), returnModal = document.getElementById('return-modal');
+        const setupModal = (btn, modal, closeIds) => {
+            btn.onclick = () => modal.classList.add('active');
+            closeIds.forEach(id => document.getElementById(id).onclick = () => modal.classList.remove('active'));
+            modal.onclick = (e) => { if (e.target === modal) modal.classList.remove('active'); };
+        };
+        setupModal(aboutBtn, aboutModal, ['close-about-x', 'close-about-btn']);
+        setupModal(returnBtn, returnModal, ['close-return-x', 'close-return-btn']);
 
-        const closeHandler = () => { modalOverlay.classList.remove('active'); };
-        returnBtn.addEventListener('click', () => { modalOverlay.classList.add('active'); });
-        closeModalBtn.addEventListener('click', closeHandler);
-        closeModalX.addEventListener('click', closeHandler);
-        modalOverlay.addEventListener('click', (e) => { if (e.target === modalOverlay) closeHandler(); });
-
-        // --- 星空與背景邏輯 ---
-        const canvas = document.getElementById('interactive-canvas');
-        const ctx = canvas.getContext('2d');
-        let stars = [];
-        const starCount = window.innerWidth < 768 ? 60 : 117; 
-        let mouse = { x: -1000, y: -1000 };
-
-        function resize() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-
-        const colors = ["rgba(255, 255, 255, ", "rgba(240, 240, 240, ", "rgba(255, 250, 240, ", "rgba(235, 245, 255, "];
-
+        // --- 星空邏輯 ---
+        const canvas = document.getElementById('interactive-canvas'), ctx = canvas.getContext('2d');
+        let stars = [], mouse = { x: -1000, y: -1000 };
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
         class Star {
-            constructor() { this.init(); }
-            init() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.baseX = this.x; this.baseY = this.y;
-                this.size = Math.random() * 1.5 + 0.6; 
-                this.colorBase = colors[Math.floor(Math.random() * colors.length)];
-                this.alpha = Math.random() * 0.5 + 0.45; 
-                this.blinkSpeed = Math.random() * 0.008 + 0.003;
-                this.isGlowing = false; this.glowFactor = 0; this.glowSpeed = 0.01 + Math.random() * 0.015; 
+            constructor() { 
+                this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height;
+                this.baseX = this.x; this.baseY = this.y; this.size = Math.random() * 1.4 + 0.5; 
+                this.alpha = Math.random() * 0.5 + 0.4; this.isGlowing = false; this.glowFactor = 0; 
             }
             draw() {
-                let currentAlpha = this.alpha + (1.0 - this.alpha) * this.glowFactor;
-                let currentSize = this.size + (this.size * 2.2) * this.glowFactor;
+                let a = this.alpha + (1 - this.alpha) * this.glowFactor, s = this.size + (this.size * 1.8) * this.glowFactor;
                 ctx.save();
-                const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, currentSize * 4);
-                gradient.addColorStop(0, this.colorBase + currentAlpha + ")");
-                gradient.addColorStop(0.5, this.colorBase + (currentAlpha * 0.25) + ")");
-                gradient.addColorStop(1, "transparent");
-                ctx.fillStyle = gradient;
-                ctx.beginPath(); ctx.arc(this.x, this.y, currentSize * 6, 0, Math.PI * 2); ctx.fill();
+                const g = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, s * 4);
+                g.addColorStop(0, `rgba(255,255,255,${a})`); g.addColorStop(1, "transparent");
+                ctx.fillStyle = g; ctx.beginPath(); ctx.arc(this.x, this.y, s * 6, 0, Math.PI * 2); ctx.fill();
                 ctx.restore();
             }
             update() {
-                let dx = mouse.x - this.baseX; let dy = mouse.y - this.baseY;
-                let distance = Math.sqrt(dx * dx + dy * dy);
-                if (distance < 300) {
-                    let strength = (300 - distance) / 300;
-                    let targetX = this.baseX + (dx * strength * 0.035);
-                    let targetY = this.baseY + (dy * strength * 0.035);
-                    this.x += (targetX - this.x) * 0.08; this.y += (targetY - this.y) * 0.08;
-                } else {
-                    this.x += (this.baseX - this.x) * 0.04; this.y += (this.baseY - this.y) * 0.04;
-                }
-                if (this.isGlowing) { if (this.glowFactor < 1) this.glowFactor += this.glowSpeed; }
-                else { if (this.glowFactor > 0) this.glowFactor -= this.glowSpeed * 0.4; }
-                this.alpha += this.blinkSpeed;
-                if (this.alpha > 0.95 || this.alpha < 0.35) this.blinkSpeed *= -1;
+                let dx = mouse.x - this.baseX, dy = mouse.y - this.baseY, dist = Math.sqrt(dx*dx + dy*dy);
+                if (dist < 300) { let f = (300 - dist) / 300; this.x += (this.baseX + dx * f * 0.03 - this.x) * 0.08; this.y += (this.baseY + dy * f * 0.03 - this.y) * 0.08; }
+                else { this.x += (this.baseX - this.x) * 0.04; this.y += (this.baseY - this.y) * 0.04; }
+                if (this.isGlowing) { if (this.glowFactor < 1) this.glowFactor += 0.02; } else { if (this.glowFactor > 0) this.glowFactor -= 0.01; }
             }
         }
-
-        function initStars() { stars = []; for (let i = 0; i < starCount; i++) stars.push(new Star()); }
+        function initStars() { stars = []; for (let i = 0; i < (window.innerWidth < 768 ? 60 : 117); i++) stars.push(new Star()); }
         function animate() { ctx.clearRect(0, 0, canvas.width, canvas.height); stars.forEach(s => { s.update(); s.draw(); }); requestAnimationFrame(animate); }
-
         resize(); initStars(); animate();
-        window.addEventListener('resize', () => { resize(); initStars(); });
-        
-        const updateMousePos = (e) => {
-            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-            mouse.x = clientX;
-            mouse.y = clientY;
-        };
-        window.addEventListener('mousemove', updateMousePos);
-        window.addEventListener('touchmove', updateMousePos);
-        window.addEventListener('touchend', () => { mouse.x = -1000; mouse.y = -1000; });
+        window.onresize = () => { resize(); initStars(); };
+        const handleMove = (e) => { mouse.x = e.touches ? e.touches[0].clientX : e.clientX; mouse.y = e.touches ? e.touches[0].clientY : e.clientY; };
+        window.onmousemove = handleMove; window.ontouchmove = handleMove;
 
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.slide');
-        setInterval(() => {
-            slides[currentSlide].classList.remove('active');
-            currentSlide = (currentSlide + 1) % slides.length;
-            slides[currentSlide].classList.add('active');
-        }, 9000);
+        // --- 輪播與文字變化 ---
+        let curS = 0; const slides = document.querySelectorAll('.slide');
+        setInterval(() => { slides[curS].classList.remove('active'); curS = (curS + 1) % slides.length; slides[curS].classList.add('active'); }, 9000);
 
-        const sloganElement = document.getElementById('slogan-text');
+        const slogan = document.getElementById('slogan-text');
         setTimeout(() => {
-            sloganElement.style.opacity = '0';
+            slogan.style.opacity = '0';
             setTimeout(() => {
-                sloganElement.innerHTML = "這片星空，為紀念 0206 地震中的 <strong>117 位犧牲者</strong> 而存在！<br>每一顆星，象徵一段留下來的記憶，也提醒我們，那一夜從未真正遠去。";
-                sloganElement.style.opacity = '1';
-                stars.forEach(s => { s.isGlowing = true; });
-                setTimeout(() => { stars.forEach(s => { s.isGlowing = false; }); }, 7000); 
+                slogan.innerHTML = "這片星空，為紀念 0206 地震中的 <strong>117 位犧牲者</strong> 而存在！<br>每一顆星，象徵一段留下來的記憶，也提醒我們，那一夜從未真正遠去。";
+                slogan.style.opacity = '1'; stars.forEach(s => s.isGlowing = true);
+                setTimeout(() => stars.forEach(s => s.isGlowing = false), 7000); 
             }, 2500);
         }, 6000);
     </script>
