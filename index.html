@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>拾載：重返震撼南台的那一晚</title>
     <style>
-        /* 1. 核心與背景輪播 */
+        /* 1. 核心與背景 */
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; background-color: #0b0d13; color: white; font-family: "Noto Sans TC", sans-serif; overflow: hidden; }
         #slideshow { position: fixed; inset: 0; z-index: 0; background: #0b0d13; }
         .slide { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0; transition: opacity 3s ease-in-out; filter: brightness(0.2) contrast(1.1) blur(2px); }
@@ -16,7 +16,7 @@
         .star { position: absolute; background: #fff; border-radius: 50%; opacity: 0.4; animation: twinkle var(--duration) infinite ease-in-out; transition: opacity 5s ease, transform 5s ease, box-shadow 5s ease; }
         @keyframes twinkle { 0%, 100% { opacity: 0.3; transform: scale(1); } 50% { opacity: 0.8; transform: scale(1.2); } }
 
-        /* 3. 左側佈局容器 */
+        /* 3. 左側佈局 */
         .main-layout {
             position: relative;
             z-index: 10;
@@ -24,119 +24,70 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            align-items: flex-start; /* 全部靠左對齊 */
-            padding-left: 10%; /* 左側留白 */
+            align-items: flex-start;
+            padding-left: 8%;
         }
 
-        /* 十週年背景大字 */
+        /* 幾何線條風格的數字 10 */
         .bg-number {
             position: absolute;
-            left: 5%;
+            left: 2%;
             top: 50%;
             transform: translateY(-50%);
-            font-size: 25rem;
+            font-size: 32rem;
             font-weight: 900;
-            color: rgba(255, 255, 255, 0.03); /* 極淡的半透明 */
+            line-height: 1;
             z-index: -1;
             user-select: none;
+            
+            /* 達成線條字體的效果 */
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(212, 175, 55, 0.3); /* 金色細邊框 */
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(212, 175, 55, 0.1) 10px,
+                rgba(212, 175, 55, 0.1) 11px
+            );
+            background-clip: text;
+            -webkit-background-clip: text;
         }
 
-        .event-time {
-            color: #d4af37;
-            font-size: 1.1rem;
-            letter-spacing: 0.4rem;
-            margin-bottom: 20px;
-            animation: golden-twinkle 4s infinite ease-in-out;
-        }
+        .event-time { color: #d4af37; font-size: 1.1rem; letter-spacing: 0.4rem; margin-bottom: 20px; animation: golden-twinkle 4s infinite ease-in-out; }
         @keyframes golden-twinkle { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; text-shadow: 0 0 10px #d4af37; } }
 
-        /* 直式標題設計 */
-        .title-wrapper {
-            display: flex;
-            align-items: center;
-            margin-bottom: 40px;
-        }
-
+        /* 直式標題 */
+        .title-wrapper { display: flex; align-items: center; margin-bottom: 40px; }
         h1.vertical-title {
-            writing-mode: vertical-rl; /* 轉為直書 */
-            font-size: 6rem;
+            writing-mode: vertical-rl;
+            font-size: 7rem;
             font-weight: 900;
-            letter-spacing: 1.5rem;
+            letter-spacing: 1.8rem;
             margin: 0;
             line-height: 1;
-            text-shadow: 0 0 30px rgba(0,0,0,0.5);
+            text-shadow: 0 0 30px rgba(0,0,0,0.8);
         }
+        .sub-title { font-size: 2.2rem; font-weight: 300; letter-spacing: 0.6rem; margin-left: 35px; border-left: 1px solid rgba(255,255,255,0.3); padding-left: 25px; }
 
-        .sub-title {
-            font-size: 2rem;
-            font-weight: 300;
-            letter-spacing: 0.5rem;
-            margin-left: 30px; /* 直標題旁的橫副標 */
-            border-left: 1px solid rgba(255,255,255,0.3);
-            padding-left: 20px;
-        }
-
-        /* 副標題文案區 */
-        .slogan-container {
-            height: 120px;
-            margin-bottom: 40px;
-        }
-
-        #slogan-text {
-            font-size: 1.1rem;
-            line-height: 2;
-            text-align: left;
-            padding-left: 25px;
-            border-left: 2px solid #d4af37;
-            transition: all 2s ease-in-out;
-        }
-
-        #slogan-text.ribbon-mode {
-            border-left: 0px solid transparent;
-            padding-left: 55px;
-            background-image: url('assets/ribbon.png');
-            background-repeat: no-repeat;
-            background-position: left center;
-            background-size: 40px;
-        }
-
+        /* 副標題文案 */
+        .slogan-container { height: 120px; margin-bottom: 50px; }
+        #slogan-text { font-size: 1.15rem; line-height: 2.2; text-align: left; padding-left: 25px; border-left: 2px solid #d4af37; transition: all 2s ease-in-out; }
+        #slogan-text.ribbon-mode { border-left: 0px solid transparent; padding-left: 55px; background-image: url('assets/ribbon.png'); background-repeat: no-repeat; background-position: left center; background-size: 40px; }
         .fade-out { opacity: 0 !important; }
 
-        /* 按鈕靠左 */
-        .enter-btn {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.25);
-            color: white;
-            padding: 14px 60px;
-            cursor: pointer;
-            backdrop-filter: blur(8px);
-            letter-spacing: 0.5rem;
-            transition: 0.5s;
-        }
+        /* 按鈕與地震波 */
+        .enter-btn { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.25); color: white; padding: 14px 65px; cursor: pointer; backdrop-filter: blur(8px); letter-spacing: 0.5rem; transition: 0.5s; font-size: 1rem; }
         .enter-btn:hover { background: #d4af37; color: #000; box-shadow: 0 0 20px rgba(212, 175, 55, 0.4); }
 
-        /* 底部金色地震波線條 */
         .seismic-line {
             position: absolute;
-            bottom: 15%;
+            bottom: 12%;
             left: 0;
             width: 100%;
-            height: 2px;
+            height: 1px;
             background: linear-gradient(90deg, transparent, #d4af37, transparent);
-            opacity: 0.5;
-        }
-        
-        /* 模擬地震波起伏 (選配特效) */
-        .seismic-line::after {
-            content: "";
-            position: absolute;
-            top: -10px;
-            left: 10%;
-            width: 20%;
-            height: 20px;
-            border-top: 2px solid #d4af37;
-            border-radius: 50% 50% 0 0; /* 簡單的波浪感 */
-            filter: drop-shadow(0 0 5px #d4af37);
+            opacity: 0.4;
         }
     </style>
 </head>
@@ -144,7 +95,6 @@
 
     <div id="slideshow">
         <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?q=80&w=2071');"></div>
-        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1506318137071-a8e063b4999d?q=80&w=2070');"></div>
     </div>
 
     <div id="stars-container"></div>
@@ -185,23 +135,13 @@
             starElements.push(star);
         }
 
-        // 2. 照片輪播
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.slide');
-        setInterval(() => {
-            slides[currentSlide].classList.remove('active');
-            currentSlide = (currentSlide + 1) % slides.length;
-            slides[currentSlide].classList.add('active');
-        }, 8000);
-
-        // 3. 視差效果
+        // 2. 視差與副標題切換邏輯 (與先前相同)
         window.addEventListener('mousemove', (e) => {
             const moveX = (window.innerWidth / 2 - e.clientX) * 0.015;
             const moveY = (window.innerHeight / 2 - e.clientY) * 0.015;
             container.style.transform = `translate3d(${moveX}px, ${moveY}px, 0)`;
         });
 
-        // 4. 文字與星辰共鳴邏輯
         const sloganElement = document.getElementById('slogan-text');
         const finalSlogan = "這片星空，為 0206 地震中的 117 條生命而存在！";
 
@@ -211,14 +151,12 @@
                 sloganElement.innerHTML = finalSlogan;
                 sloganElement.classList.add('ribbon-mode');
                 sloganElement.classList.remove('fade-out');
-
                 starElements.forEach(star => {
                     star.style.animation = 'none'; 
                     star.style.opacity = '1';
                     star.style.transform = 'scale(3.8)';
                     star.style.boxShadow = '0 0 35px 5px rgba(255,255,255,0.9)';
                 });
-
                 setTimeout(() => {
                     starElements.forEach(star => {
                         star.style.opacity = '';
