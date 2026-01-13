@@ -161,7 +161,6 @@
             border-left: none; padding-left: 45px;
         }
 
-        /* 全長脈衝波形分隔線 */
         .seismic-wave-divider {
             position: absolute;
             left: -20px; 
@@ -255,7 +254,7 @@
 
         .enter-btn:hover .btn-arrow-icon { transform: translateX(10px); }
 
-        /* 固定位置元素 (防止地震動畫導致位移) */
+        /* 頁底與語言切換 */
         .header-lang-switcher {
             position: fixed; top: 35px; right: 8%; z-index: 100; display: flex; gap: 20px;
         }
@@ -292,8 +291,55 @@
         .modal-overlay.active .construction-card { transform: scale(1); }
         .card-close-x { position: absolute; top: 20px; right: 20px; width: 28px; height: 28px; cursor: pointer; color: rgba(255, 255, 255, 0.4); }
 
-        /* ✨ 手機版響應式樣式優化 (Mobile Optimization) */
+        /* ✨ 橫式翻轉提醒 (Orientation Reminder) */
+        .orientation-reminder {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: var(--deep-bg);
+            z-index: 9999;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px;
+            color: var(--stone-white);
+        }
+
+        .orientation-reminder svg {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 30px;
+            color: var(--gold);
+            animation: phoneRotate 2.5s infinite ease-in-out;
+        }
+
+        @keyframes phoneRotate {
+            0% { transform: rotate(90deg); }
+            50% { transform: rotate(0deg); }
+            100% { transform: rotate(90deg); }
+        }
+
+        .orientation-reminder h2 {
+            font-family: "Noto Serif TC", serif;
+            font-size: 1.8rem;
+            letter-spacing: 0.3rem;
+            margin-bottom: 15px;
+        }
+
+        .orientation-reminder p {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.5);
+            letter-spacing: 0.1rem;
+        }
+
+        /* 手機版響應式樣式優化 */
         @media (max-width: 768px) {
+            /* 橫式提醒觸發條件 */
+            @media (orientation: landscape) {
+                .orientation-reminder { display: flex; }
+            }
+
             .main-layout {
                 padding-left: 5%; padding-right: 5%; justify-content: flex-start; 
                 padding-top: 80px; align-items: center;
@@ -307,7 +353,6 @@
             .title-wrapper { flex-direction: column; align-items: center; width: 100%; }
             .title-group { align-items: center; width: 100%; }
 
-            /* 拾載：行動版橫排置中 */
             h1.vertical-title {
                 writing-mode: horizontal-tb; 
                 font-size: 4rem; letter-spacing: 0.8rem;
@@ -337,29 +382,15 @@
 
             .header-lang-switcher { top: 20px; right: 5%; }
 
-            /* ✨ 手機版頁底優化：置中堆疊呈現 */
             .footer-copyright {
-                position: relative; 
-                left: auto; 
-                bottom: auto; 
-                margin-top: 60px; /* 與上方內容拉開距離 */
-                width: 100%;
-                display: block;
-                text-align: center;
-                pointer-events: auto;
+                position: relative; left: auto; bottom: auto; margin-top: 60px; 
+                width: 100%; display: block; text-align: center; pointer-events: auto;
             }
 
             .footer-links {
-                position: relative; 
-                right: auto; 
-                bottom: auto; 
-                margin-top: 15px; 
-                margin-bottom: 50px; /* 底部留白 */
-                width: 100%;
-                flex-direction: row;
-                justify-content: center;
-                flex-wrap: wrap;
-                gap: 20px;
+                position: relative; right: auto; bottom: auto; 
+                margin-top: 15px; margin-bottom: 50px; 
+                width: 100%; flex-direction: row; justify-content: center; flex-wrap: wrap; gap: 20px;
             }
             
             .footer-links a { font-size: 0.7rem; }
@@ -382,6 +413,16 @@
             <feComposite operator="out" in="eroded" in2="mottle" />
         </filter>
     </svg>
+
+    <!-- ✨ 橫式翻轉提醒層 -->
+    <div class="orientation-reminder">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
+            <path d="M12 18h.01" />
+        </svg>
+        <h2>請轉回直式視窗</h2>
+        <p>「拾載」建議以直式瀏覽以獲得最佳體驗</p>
+    </div>
 
     <!-- 頂欄：語言切換 -->
     <div class="header-lang-switcher">
@@ -438,7 +479,7 @@
         </div>
     </div>
 
-    <!-- 頁底版權與連結 (置於 Body 最底層) -->
+    <!-- 頁底版權與連結 -->
     <div class="footer-copyright">
         © 2026 拾載專案團隊．版權所有
     </div>
