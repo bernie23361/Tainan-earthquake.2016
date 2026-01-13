@@ -1,4 +1,8 @@
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>拾載：重返撼動南台的那一晚</title>
     <!-- 引入思源黑體與思源宋體 (明體) -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&family=Noto+Serif+TC:wght@700;900&display=swap" rel="stylesheet">
@@ -288,50 +292,79 @@
         .modal-overlay.active .construction-card { transform: scale(1); }
         .card-close-x { position: absolute; top: 20px; right: 20px; width: 28px; height: 28px; cursor: pointer; color: rgba(255, 255, 255, 0.4); }
 
-        /* ✨ 手機版響應式樣式優化 (Mobile Optimization) */
+        /* ✨ 手機版響應式樣式優化 (Mobile Centered Optimization) */
         @media (max-width: 768px) {
             .main-layout {
-                padding-left: 5%; padding-right: 5%; justify-content: flex-start; padding-top: 80px;
+                padding-left: 5%; 
+                padding-right: 5%; 
+                justify-content: flex-start; 
+                padding-top: 80px;
+                align-items: center; /* ✨ 改為置中 */
             }
 
             .bg-number {
-                font-size: 12rem; left: -2%; top: 15%; opacity: 0.4;
+                font-size: 12rem; left: 50%; transform: translateX(-50%) translateY(-50%); opacity: 0.3;
             }
 
-            /* ✨ 拾載標題改為橫排模式 */
+            /* 標題與內容置中排列 */
             .title-wrapper {
-                flex-direction: column; /* 改為上下排列 */
-                align-items: flex-start;
+                flex-direction: column; 
+                align-items: center; /* ✨ 改為置中 */
+                width: 100%;
+            }
+
+            .title-group {
+                align-items: center; /* ✨ 改為置中 */
+                width: 100%;
             }
 
             h1.vertical-title {
-                writing-mode: horizontal-tb; /* ✨ 行動版強制改為橫式文字 */
-                font-size: 4.5rem;
+                writing-mode: horizontal-tb; 
+                font-size: 4.2rem;
                 letter-spacing: 0.8rem;
-                margin-bottom: 25px; /* 給予下方震波與文字空間 */
-                padding-bottom: 10px;
+                margin-bottom: 30px; 
+                padding-left: 0.8rem; /* 補償最後一個字的 letter-spacing 以置中 */
                 width: 100%;
-                text-align: left;
+                text-align: center; /* ✨ 文字置中 */
             }
 
             .text-stack {
-                margin-left: 0; /* 移除左邊距，因為上方標題已改橫式 */
-                padding-left: 25px;
+                margin-left: 0; 
+                padding-left: 0; /* ✨ 移除縮排以利置中 */
                 width: 100%;
                 box-sizing: border-box;
+                align-items: center; /* ✨ 內部子元素置中 */
             }
 
             .seismic-wave-divider {
-                left: -10px;
-                width: 20px;
+                display: none; /* ✨ 置中模式下隱藏側邊線條 */
+            }
+
+            .full-date-time {
+                text-align: center;
+                font-size: 1.1rem;
+                letter-spacing: 0.2rem;
             }
 
             .main-sub-text {
-                font-size: 1.6rem; letter-spacing: 0.3rem; white-space: normal; line-height: 1.4;
+                font-size: 1.6rem; 
+                letter-spacing: 0.3rem; 
+                white-space: normal; 
+                line-height: 1.4;
+                text-align: center; /* ✨ 文字置中 */
             }
 
             #slogan-text {
-                font-size: 0.9rem; line-height: 1.8; max-width: 100%;
+                font-size: 0.9rem; 
+                line-height: 2; 
+                max-width: 100%;
+                text-align: center; /* ✨ 文字置中 */
+            }
+
+            .btn-group {
+                gap: 15px;
+                justify-content: center; /* ✨ 按鈕置中 */
+                width: 100%;
             }
 
             .enter-btn {
@@ -342,14 +375,17 @@
 
             .footer-copyright {
                 position: relative; left: auto; bottom: auto; margin-top: 60px; display: block;
+                text-align: center; /* ✨ 文字置中 */
             }
 
             .footer-links {
-                position: relative; right: auto; bottom: auto; margin-top: 15px; margin-bottom: 40px; flex-wrap: wrap; gap: 15px;
+                position: relative; right: auto; bottom: auto; margin-top: 15px; margin-bottom: 40px; 
+                flex-wrap: wrap; gap: 15px;
+                justify-content: center; /* ✨ 連結置中 */
             }
 
             .tainan-map-overlay {
-                width: 100vw; right: -20%; opacity: 0.08;
+                width: 120vw; right: 50%; transform: translateX(50%) translateY(-50%); opacity: 0.05;
             }
         }
 
@@ -403,7 +439,6 @@
     <div class="main-layout">
         <div class="bg-number">10</div>
         <div class="title-wrapper">
-            <!-- 標題組合 -->
             <div class="title-group">
                 <h1 class="vertical-title">拾載</h1>
             </div>
@@ -528,7 +563,8 @@
         const updateMousePos = (e) => {
             const clientX = e.touches ? e.touches[0].clientX : e.clientX;
             const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-            mouse.x = clientX; mouse.y = clientY;
+            mouse.x = clientX;
+            mouse.y = clientY;
         };
         window.addEventListener('mousemove', updateMousePos);
         window.addEventListener('touchmove', updateMousePos);
