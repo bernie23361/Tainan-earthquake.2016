@@ -145,10 +145,9 @@
             align-items: flex-start;
         }
         
-        /* 拾載：標題文字 */
         h1.vertical-title {
             font-family: "Noto Serif TC", serif;
-            writing-mode: vertical-rl; /* 電腦版維持縱向 */
+            writing-mode: vertical-rl;
             font-size: 8.5rem; font-weight: 900;
             letter-spacing: 2.5rem; margin: 0; line-height: 1;
             filter: url(#balanced-weathering);
@@ -256,7 +255,7 @@
 
         .enter-btn:hover .btn-arrow-icon { transform: translateX(10px); }
 
-        /* 頁底與語言切換 */
+        /* 固定位置元素 (防止地震動畫導致位移) */
         .header-lang-switcher {
             position: fixed; top: 35px; right: 8%; z-index: 100; display: flex; gap: 20px;
         }
@@ -269,11 +268,12 @@
         .footer-copyright {
             position: fixed; bottom: 35px; left: 8%; z-index: 15; font-size: 0.75rem;
             color: rgba(255, 255, 255, 0.35); letter-spacing: 0.15rem; text-transform: uppercase;
+            pointer-events: none; user-select: none;
         }
         .footer-links {
             position: fixed; bottom: 35px; right: 8%; z-index: 15; display: flex; gap: 30px;
         }
-        .footer-links a { color: rgba(255, 255, 255, 0.35); text-decoration: none; font-size: 0.75rem; letter-spacing: 0.12rem; }
+        .footer-links a { color: rgba(255, 255, 255, 0.35); text-decoration: none; font-size: 0.75rem; letter-spacing: 0.12rem; transition: 0.3s; }
         .footer-links a:hover, .header-lang-switcher a:hover { color: var(--gold); }
 
         /* 彈出卡片 */
@@ -292,100 +292,80 @@
         .modal-overlay.active .construction-card { transform: scale(1); }
         .card-close-x { position: absolute; top: 20px; right: 20px; width: 28px; height: 28px; cursor: pointer; color: rgba(255, 255, 255, 0.4); }
 
-        /* ✨ 手機版響應式樣式優化 (Mobile Centered Optimization) */
+        /* ✨ 手機版響應式樣式優化 (Mobile Optimization) */
         @media (max-width: 768px) {
             .main-layout {
-                padding-left: 5%; 
-                padding-right: 5%; 
-                justify-content: flex-start; 
-                padding-top: 80px;
-                align-items: center; /* ✨ 改為置中 */
+                padding-left: 5%; padding-right: 5%; justify-content: flex-start; 
+                padding-top: 80px; align-items: center;
+                height: auto; min-height: 100vh; overflow-y: auto;
             }
 
             .bg-number {
-                font-size: 12rem; left: 50%; transform: translateX(-50%) translateY(-50%); opacity: 0.3;
+                font-size: 10rem; left: 50%; transform: translateX(-50%) translateY(-50%); opacity: 0.2;
             }
 
-            /* 標題與內容置中排列 */
-            .title-wrapper {
-                flex-direction: column; 
-                align-items: center; /* ✨ 改為置中 */
-                width: 100%;
-            }
+            .title-wrapper { flex-direction: column; align-items: center; width: 100%; }
+            .title-group { align-items: center; width: 100%; }
 
-            .title-group {
-                align-items: center; /* ✨ 改為置中 */
-                width: 100%;
-            }
-
+            /* 拾載：行動版橫排置中 */
             h1.vertical-title {
                 writing-mode: horizontal-tb; 
-                font-size: 4.2rem;
-                letter-spacing: 0.8rem;
-                margin-bottom: 30px; 
-                padding-left: 0.8rem; /* 補償最後一個字的 letter-spacing 以置中 */
-                width: 100%;
-                text-align: center; /* ✨ 文字置中 */
+                font-size: 4rem; letter-spacing: 0.8rem;
+                margin-bottom: 25px; padding-left: 0.8rem;
+                width: 100%; text-align: center;
             }
 
             .text-stack {
-                margin-left: 0; 
-                padding-left: 0; /* ✨ 移除縮排以利置中 */
-                width: 100%;
-                box-sizing: border-box;
-                align-items: center; /* ✨ 內部子元素置中 */
+                margin-left: 0; padding-left: 0; width: 100%;
+                align-items: center; box-sizing: border-box;
             }
 
-            .seismic-wave-divider {
-                display: none; /* ✨ 置中模式下隱藏側邊線條 */
-            }
+            .seismic-wave-divider { display: none; }
 
-            .full-date-time {
-                text-align: center;
-                font-size: 1.1rem;
-                letter-spacing: 0.2rem;
-            }
-
+            .full-date-time { text-align: center; font-size: 1.1rem; letter-spacing: 0.15rem; }
             .main-sub-text {
-                font-size: 1.6rem; 
-                letter-spacing: 0.3rem; 
-                white-space: normal; 
-                line-height: 1.4;
-                text-align: center; /* ✨ 文字置中 */
+                font-size: 1.6rem; letter-spacing: 0.3rem; white-space: normal; 
+                line-height: 1.4; text-align: center;
             }
 
             #slogan-text {
-                font-size: 0.9rem; 
-                line-height: 2; 
-                max-width: 100%;
-                text-align: center; /* ✨ 文字置中 */
+                font-size: 0.95rem; line-height: 2; max-width: 100%; text-align: center;
             }
 
-            .btn-group {
-                gap: 15px;
-                justify-content: center; /* ✨ 按鈕置中 */
-                width: 100%;
-            }
-
-            .enter-btn {
-                min-width: 100%; padding: 15px 25px;
-            }
+            .btn-group { gap: 15px; justify-content: center; width: 100%; }
+            .enter-btn { min-width: 100%; padding: 15px 25px; }
 
             .header-lang-switcher { top: 20px; right: 5%; }
 
+            /* ✨ 手機版頁底優化：置中堆疊呈現 */
             .footer-copyright {
-                position: relative; left: auto; bottom: auto; margin-top: 60px; display: block;
-                text-align: center; /* ✨ 文字置中 */
+                position: relative; 
+                left: auto; 
+                bottom: auto; 
+                margin-top: 60px; /* 與上方內容拉開距離 */
+                width: 100%;
+                display: block;
+                text-align: center;
+                pointer-events: auto;
             }
 
             .footer-links {
-                position: relative; right: auto; bottom: auto; margin-top: 15px; margin-bottom: 40px; 
-                flex-wrap: wrap; gap: 15px;
-                justify-content: center; /* ✨ 連結置中 */
+                position: relative; 
+                right: auto; 
+                bottom: auto; 
+                margin-top: 15px; 
+                margin-bottom: 50px; /* 底部留白 */
+                width: 100%;
+                flex-direction: row;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 20px;
             }
+            
+            .footer-links a { font-size: 0.7rem; }
 
             .tainan-map-overlay {
-                width: 120vw; right: 50%; transform: translateX(50%) translateY(-50%); opacity: 0.05;
+                width: 130vw; right: 50%; transform: translateX(50%) translateY(-50%); opacity: 0.05;
             }
         }
 
@@ -403,20 +383,10 @@
         </filter>
     </svg>
 
-    <!-- 頂欄與頁底元素 -->
+    <!-- 頂欄：語言切換 -->
     <div class="header-lang-switcher">
         <a class="active">繁中</a>
         <a href="#">EN</a>
-    </div>
-
-    <div class="footer-copyright">
-        © 2026 拾載專案團隊．版權所有
-    </div>
-
-    <div class="footer-links">
-        <a href="#">服務條款</a>
-        <a href="#">注意事項</a>
-        <a href="#">官方網站</a>
     </div>
 
     <!-- 台南全市地圖 -->
@@ -444,7 +414,6 @@
             </div>
 
             <div class="text-stack">
-                <!-- 全長分隔線 + 中央集中脈衝波形 -->
                 <svg class="seismic-wave-divider" viewBox="0 0 40 1000" preserveAspectRatio="none">
                     <line class="seismic-base-line" x1="20" y1="0" x2="20" y2="1000" />
                     <path class="seismic-path" d="M20,0 L20,380 L18,395 L22,410 L16,425 L25,440 L10,460 L32,480 L0,505 L40,530 L5,555 L35,575 L12,595 L26,610 L18,625 L21,640 L20,660 L20,1000" />
@@ -467,6 +436,17 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- 頁底版權與連結 (置於 Body 最底層) -->
+    <div class="footer-copyright">
+        © 2026 拾載專案團隊．版權所有
+    </div>
+
+    <div class="footer-links">
+        <a href="#">服務條款</a>
+        <a href="#">注意事項</a>
+        <a href="#">官方網站</a>
     </div>
 
     <!-- 「尚在建構中」彈出卡片 -->
@@ -502,7 +482,7 @@
         const canvas = document.getElementById('interactive-canvas');
         const ctx = canvas.getContext('2d');
         let stars = [];
-        const starCount = window.innerWidth < 768 ? 60 : 117; // 手機版星辰數量減少以優化效能
+        const starCount = window.innerWidth < 768 ? 60 : 117; 
         let mouse = { x: -1000, y: -1000 };
 
         function resize() {
