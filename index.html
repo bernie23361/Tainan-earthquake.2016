@@ -5,15 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>拾載：重返震撼南台的那一晚</title>
     <style>
-        /* 1. 核心與背景 */
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background-color: #0b0d13; color: white; font-family: "Noto Sans TC", sans-serif; overflow: hidden; }
-        #slideshow { position: fixed; inset: 0; z-index: 0; background: #0b0d13; }
-        .slide { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0; transition: opacity 3s ease-in-out; filter: brightness(0.2) contrast(1.1) blur(2px); }
-        .slide.active { opacity: 0.3; }
+        /* 1. 核心與背景 - 已更新為 RAL 5022 夜藍色 (#252850) */
+        body, html { 
+            margin: 0; padding: 0; width: 100%; height: 100%; 
+            background-color: #252850; /* RAL 5022 Night Blue */
+            color: white; 
+            font-family: "Noto Sans TC", sans-serif; 
+            overflow: hidden; 
+        }
+
+        #slideshow { position: fixed; inset: 0; z-index: 0; background: #252850; }
+        .slide { 
+            position: absolute; inset: 0; background-size: cover; background-position: center; 
+            opacity: 0; transition: opacity 3s ease-in-out; 
+            /* 讓照片融入夜藍色 */
+            filter: brightness(0.2) contrast(1.1) blur(2px) sepia(0.2) hue-rotate(190deg); 
+        }
+        .slide.active { opacity: 0.25; }
 
         /* 2. 117 顆星辰 */
         #stars-container { position: fixed; inset: -100px; z-index: 1; pointer-events: none; }
-        .star { position: absolute; background: #fff; border-radius: 50%; opacity: 0.4; animation: twinkle var(--duration) infinite ease-in-out; transition: opacity 5s ease, transform 5s ease, box-shadow 5s ease; }
+        .star { 
+            position: absolute; background: #fff; border-radius: 50%; opacity: 0.4; 
+            animation: twinkle var(--duration) infinite ease-in-out; 
+            transition: opacity 5s ease, transform 5s ease, box-shadow 5s ease; 
+        }
         @keyframes twinkle { 0%, 100% { opacity: 0.3; transform: scale(1); } 50% { opacity: 0.8; transform: scale(1.2); } }
 
         /* 3. 左側佈局 */
@@ -28,7 +44,7 @@
             padding-left: 8%;
         }
 
-        /* 幾何條紋 10 背景 */
+        /* 幾何條紋 10 背景 - 配合夜藍色調暗金色 */
         .bg-number {
             position: absolute;
             left: 2%;
@@ -40,19 +56,15 @@
             z-index: -1;
             user-select: none;
             color: transparent;
-            -webkit-text-stroke: 1px rgba(212, 175, 55, 0.3);
-            background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(212, 175, 55, 0.1) 10px, rgba(212, 175, 55, 0.1) 11px);
+            -webkit-text-stroke: 1px rgba(212, 175, 55, 0.2);
+            background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(212, 175, 55, 0.08) 10px, rgba(212, 175, 55, 0.08) 11px);
             background-clip: text;
             -webkit-background-clip: text;
         }
 
-        .event-label { color: #d4af37; font-size: 1.1rem; letter-spacing: 0.4rem; margin-bottom: 20px; animation: golden-twinkle 4s infinite ease-in-out; }
-        @keyframes golden-twinkle { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; text-shadow: 0 0 10px #d4af37; } }
-
         /* --- 標題區域 --- */
-        .title-wrapper { display: flex; align-items: center; margin-bottom: 40px; }
+        .title-wrapper { display: flex; align-items: flex-start; margin-bottom: 30px; }
         
-        /* 拾載：最醒目的直式標題 */
         h1.vertical-title {
             writing-mode: vertical-rl;
             font-size: 8rem;
@@ -60,10 +72,10 @@
             letter-spacing: 2rem;
             margin: 0;
             line-height: 1;
-            text-shadow: 0 0 30px rgba(0,0,0,0.8);
+            text-shadow: 0 0 40px rgba(0,0,0,0.8);
         }
 
-        .sub-title-group {
+        .text-stack {
             display: flex;
             flex-direction: column;
             margin-left: 45px;
@@ -71,31 +83,54 @@
             padding-left: 35px;
         }
 
-        /* 第一行：日期時間（調整為較小，且帶有金色調） */
         .full-date-time {
-            font-size: 1.6rem; /* 顯著縮小 */
+            font-size: 1.6rem;
             font-weight: 700;
-            color: #d4af37; /* 換成金色，增加質感 */
-            margin-bottom: 8px;
-            letter-spacing: 0.1rem;
-            opacity: 0.9;
+            color: #d4af37;
+            margin-bottom: 10px;
+            letter-spacing: 0.15rem;
         }
 
-        /* 第二行：主要橫式標題（視覺中心） */
         .main-sub-text {
-            font-size: 3.2rem; /* 放大，成為焦點 */
+            font-size: 3.2rem;
             font-weight: 900;
             letter-spacing: 0.6rem;
             white-space: nowrap;
+            margin-bottom: 35px;
         }
 
-        /* 副標題文案區 */
-        .slogan-container { height: 120px; margin-bottom: 50px; }
-        #slogan-text { font-size: 1.15rem; line-height: 2.2; text-align: left; padding-left: 25px; border-left: 2px solid #d4af37; transition: all 2s ease-in-out; }
-        #slogan-text.ribbon-mode { border-left: 0px solid transparent; padding-left: 55px; background-image: url('assets/ribbon.png'); background-repeat: no-repeat; background-position: left center; background-size: 40px; }
+        /* 文案區 */
+        .slogan-container { height: 120px; max-width: 600px; }
+        #slogan-text {
+            font-size: 1.15rem;
+            line-height: 2.2;
+            text-align: left;
+            transition: all 2s ease-in-out;
+            color: rgba(255, 255, 255, 0.9);
+        }
 
-        /* 按鈕與線條 */
-        .enter-btn { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.25); color: white; padding: 14px 65px; cursor: pointer; backdrop-filter: blur(8px); letter-spacing: 0.5rem; transition: 0.5s; }
+        #slogan-text.ribbon-mode {
+            padding-left: 55px;
+            background-image: url('assets/ribbon.png');
+            background-repeat: no-repeat;
+            background-position: left center;
+            background-size: 40px;
+        }
+
+        .fade-out { opacity: 0 !important; }
+
+        /* 按鈕 */
+        .enter-btn {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.25);
+            color: white;
+            padding: 14px 65px;
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+            letter-spacing: 0.5rem;
+            transition: 0.5s;
+            margin-top: 10px;
+        }
         .enter-btn:hover { background: #d4af37; color: #000; box-shadow: 0 0 20px rgba(212, 175, 55, 0.4); }
 
         .seismic-line { position: absolute; bottom: 12%; left: 0; width: 100%; height: 1px; background: linear-gradient(90deg, transparent, #d4af37, transparent); opacity: 0.4; }
@@ -112,22 +147,20 @@
     <div class="main-layout">
         <div class="bg-number">10</div>
 
-        <div class="event-label">MEMORIAL</div>
-        
         <div class="title-wrapper">
             <h1 class="vertical-title">拾載</h1>
             
-            <div class="sub-title-group">
+            <div class="text-stack">
                 <div class="full-date-time">2016 . 02 . 06 — 03:57 AM</div>
                 <div class="main-sub-text">重返撼動南台的那一晚</div>
+                
+                <div class="slogan-container">
+                    <div id="slogan-text">十年前...這座島嶼，在時隔 17 年後的黑夜裡，再次發生了劇烈的晃動。<br>那一刻，全台甦醒，記憶留下了痕跡。<br>我們之所以選擇記得，那是因為，記得就是一種前行。</div>
+                </div>
+
+                <button class="enter-btn">拾起記憶</button>
             </div>
         </div>
-
-        <div class="slogan-container">
-            <div id="slogan-text">十年前...這座島嶼，在時隔 17 年後的黑夜裡，再次發生了劇烈的晃動。<br>那一刻，全台甦醒，記憶留下了痕跡。<br>我們之所以選擇記得，那是因為，記得就是一種前行。</div>
-        </div>
-
-        <button class="enter-btn">拾起記憶</button>
         
         <div class="seismic-line"></div>
     </div>
