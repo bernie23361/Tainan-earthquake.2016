@@ -1,8 +1,4 @@
-<!DOCTYPE html>
-<html lang="zh-TW">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>拾載：重返撼動南台的那一晚</title>
     <!-- 引入思源黑體與思源宋體 (明體) -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&family=Noto+Serif+TC:wght@700;900&display=swap" rel="stylesheet">
@@ -142,12 +138,14 @@
         .title-group {
             display: flex;
             flex-direction: column;
-            align-items: center;
+            align-items: flex-start;
         }
         
+        /* 拾載：標題文字 */
         h1.vertical-title {
             font-family: "Noto Serif TC", serif;
-            writing-mode: vertical-rl; font-size: 8.5rem; font-weight: 900;
+            writing-mode: vertical-rl; /* 電腦版維持縱向 */
+            font-size: 8.5rem; font-weight: 900;
             letter-spacing: 2.5rem; margin: 0; line-height: 1;
             filter: url(#balanced-weathering);
             color: var(--stone-white);
@@ -203,17 +201,10 @@
         }
 
         @keyframes timeTextGlow {
-            0%, 100% { 
-                text-shadow: 0 0 10px rgba(212, 175, 55, 0.3), 0 0 2px rgba(212, 175, 55, 0.2); 
-                opacity: 0.85;
-            }
-            50% { 
-                text-shadow: 0 0 20px rgba(212, 175, 55, 0.7), 0 0 5px rgba(212, 175, 55, 0.4); 
-                opacity: 1;
-            }
+            0%, 100% { text-shadow: 0 0 10px rgba(212, 175, 55, 0.3); opacity: 0.85; }
+            50% { text-shadow: 0 0 20px rgba(212, 175, 55, 0.7); opacity: 1; }
         }
 
-        /* 副標題 */
         .main-sub-text {
             font-family: "Noto Serif TC", serif;
             font-size: 3.2rem; font-weight: 900; letter-spacing: 0.8rem;
@@ -223,7 +214,6 @@
             text-shadow: 1px 1px 4px rgba(0,0,0,0.4);
         }
 
-        /* 文案區 */
         #slogan-text {
             font-size: 1.1rem; line-height: 2.5; text-align: left;
             transition: all 2.5s cubic-bezier(0.19, 1, 0.22, 1);
@@ -250,194 +240,116 @@
         }
 
         .btn-arrow-icon {
-            width: 20px;
-            height: 20px;
-            margin-left: 15px;
-            fill: none;
-            stroke: currentColor;
-            stroke-width: 2;
-            stroke-linecap: round;
-            stroke-linejoin: round;
+            width: 20px; height: 20px; margin-left: 15px; fill: none;
+            stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
             transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .enter-btn:hover {
-            border-color: var(--gold);
-            color: var(--gold);
-            box-shadow: 0 0 25px rgba(212, 175, 55, 0.2);
-            transform: translateY(-2px);
+            border-color: var(--gold); color: var(--gold);
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.2); transform: translateY(-2px);
         }
 
-        .enter-btn:hover .btn-arrow-icon {
-            transform: translateX(10px);
-        }
+        .enter-btn:hover .btn-arrow-icon { transform: translateX(10px); }
 
-        /* 彈出卡片遮罩 */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.65);
-            backdrop-filter: blur(12px);
-            z-index: 200;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.6s cubic-bezier(0.19, 1, 0.22, 1);
-            padding: 20px;
-        }
-
-        .modal-overlay.active {
-            opacity: 1;
-            pointer-events: all;
-        }
-
-        .construction-card {
-            position: relative;
-            background: rgba(20, 25, 35, 0.85);
-            border: 1px solid rgba(212, 175, 55, 0.35);
-            padding: 70px 50px;
-            width: 100%;
-            max-width: 520px;
-            text-align: center;
-            box-shadow: 0 0 60px rgba(0, 0, 0, 0.6), 0 0 20px rgba(212, 175, 55, 0.1);
-            transform: scale(0.9);
-            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border-radius: 24px;
-        }
-
-        .card-close-x {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 28px;
-            height: 28px;
-            cursor: pointer;
-            color: rgba(255, 255, 255, 0.4);
-        }
-
-        /* ✨ 導航連結與頁底修正 (Fixed position elements move out of transform containers) */
+        /* 頁底與語言切換 */
         .header-lang-switcher {
-            position: fixed;
-            top: 35px;
-            right: 8%;
-            z-index: 100;
-            display: flex;
-            gap: 20px;
+            position: fixed; top: 35px; right: 8%; z-index: 100; display: flex; gap: 20px;
         }
-
         .header-lang-switcher a {
-            color: rgba(255, 255, 255, 0.4);
-            text-decoration: none;
-            font-size: 0.75rem;
-            letter-spacing: 0.12rem;
-            transition: all 0.3s ease;
-            cursor: pointer;
+            color: rgba(255, 255, 255, 0.4); text-decoration: none; font-size: 0.75rem;
+            letter-spacing: 0.12rem; transition: all 0.3s ease; cursor: pointer;
         }
-
-        .header-lang-switcher a.active {
-            color: rgba(255, 255, 255, 0.85);
-            font-weight: 700;
-        }
-
+        .header-lang-switcher a.active { color: rgba(255, 255, 255, 0.85); font-weight: 700; }
+        
         .footer-copyright {
-            position: fixed;
-            bottom: 35px;
-            left: 8%;
-            z-index: 15;
-            font-size: 0.75rem;
-            color: rgba(255, 255, 255, 0.35);
-            letter-spacing: 0.15rem;
-            text-transform: uppercase;
-            pointer-events: none;
-            user-select: none;
+            position: fixed; bottom: 35px; left: 8%; z-index: 15; font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.35); letter-spacing: 0.15rem; text-transform: uppercase;
         }
-
         .footer-links {
-            position: fixed;
-            bottom: 35px;
-            right: 8%;
-            z-index: 15;
-            display: flex;
-            gap: 30px;
+            position: fixed; bottom: 35px; right: 8%; z-index: 15; display: flex; gap: 30px;
         }
+        .footer-links a { color: rgba(255, 255, 255, 0.35); text-decoration: none; font-size: 0.75rem; letter-spacing: 0.12rem; }
+        .footer-links a:hover, .header-lang-switcher a:hover { color: var(--gold); }
 
-        .footer-links a {
-            color: rgba(255, 255, 255, 0.35);
-            text-decoration: none;
-            font-size: 0.75rem;
-            letter-spacing: 0.12rem;
-            transition: all 0.3s ease;
-            cursor: pointer;
+        /* 彈出卡片 */
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(0, 0, 0, 0.65); backdrop-filter: blur(12px);
+            z-index: 200; display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.6s cubic-bezier(0.19, 1, 0.22, 1); padding: 20px;
         }
-
-        .footer-links a:hover, .header-lang-switcher a:hover {
-            color: var(--gold);
-            text-shadow: 0 0 8px rgba(212, 175, 55, 0.4);
+        .modal-overlay.active { opacity: 1; pointer-events: all; }
+        .construction-card {
+            position: relative; background: rgba(20, 25, 35, 0.85); border: 1px solid rgba(212, 175, 55, 0.35);
+            padding: 70px 50px; width: 100%; max-width: 520px; text-align: center; border-radius: 24px;
+            box-shadow: 0 0 60px rgba(0, 0, 0, 0.6); transform: scale(0.9);
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
+        .modal-overlay.active .construction-card { transform: scale(1); }
+        .card-close-x { position: absolute; top: 20px; right: 20px; width: 28px; height: 28px; cursor: pointer; color: rgba(255, 255, 255, 0.4); }
 
-        /* 手機版響應式修正 */
+        /* ✨ 手機版響應式樣式優化 (Mobile Optimization) */
         @media (max-width: 768px) {
             .main-layout {
-                padding-left: 5%;
-                padding-right: 5%;
-                justify-content: flex-start;
-                padding-top: 100px;
+                padding-left: 5%; padding-right: 5%; justify-content: flex-start; padding-top: 80px;
             }
 
             .bg-number {
-                font-size: 15rem;
-                left: -5%;
-                top: 20%;
-                opacity: 0.5;
+                font-size: 12rem; left: -2%; top: 15%; opacity: 0.4;
+            }
+
+            /* ✨ 拾載標題改為橫排模式 */
+            .title-wrapper {
+                flex-direction: column; /* 改為上下排列 */
+                align-items: flex-start;
             }
 
             h1.vertical-title {
-                font-size: 4rem;
-                letter-spacing: 1.2rem;
-            }
-
-            .text-stack {
-                margin-left: 20px;
-                padding-left: 25px;
-            }
-
-            .main-sub-text {
-                font-size: 1.8rem;
-                letter-spacing: 0.3rem;
-                white-space: normal;
-                line-height: 1.4;
-            }
-
-            .enter-btn {
-                min-width: 100%;
-                padding: 15px 25px;
-            }
-
-            .header-lang-switcher {
-                top: 20px;
-                right: 5%;
-            }
-
-            /* 手機版頁底改為相對定位，避免遮擋內容 */
-            .footer-copyright {
-                position: relative;
-                left: auto;
-                bottom: auto;
-                margin-top: 60px;
-                display: block;
+                writing-mode: horizontal-tb; /* ✨ 行動版強制改為橫式文字 */
+                font-size: 4.5rem;
+                letter-spacing: 0.8rem;
+                margin-bottom: 25px; /* 給予下方震波與文字空間 */
+                padding-bottom: 10px;
+                width: 100%;
                 text-align: left;
             }
 
+            .text-stack {
+                margin-left: 0; /* 移除左邊距，因為上方標題已改橫式 */
+                padding-left: 25px;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .seismic-wave-divider {
+                left: -10px;
+                width: 20px;
+            }
+
+            .main-sub-text {
+                font-size: 1.6rem; letter-spacing: 0.3rem; white-space: normal; line-height: 1.4;
+            }
+
+            #slogan-text {
+                font-size: 0.9rem; line-height: 1.8; max-width: 100%;
+            }
+
+            .enter-btn {
+                min-width: 100%; padding: 15px 25px;
+            }
+
+            .header-lang-switcher { top: 20px; right: 5%; }
+
+            .footer-copyright {
+                position: relative; left: auto; bottom: auto; margin-top: 60px; display: block;
+            }
+
             .footer-links {
-                position: relative;
-                right: auto;
-                bottom: auto;
-                margin-top: 15px;
-                margin-bottom: 40px;
-                flex-wrap: wrap;
-                gap: 15px;
+                position: relative; right: auto; bottom: auto; margin-top: 15px; margin-bottom: 40px; flex-wrap: wrap; gap: 15px;
+            }
+
+            .tainan-map-overlay {
+                width: 100vw; right: -20%; opacity: 0.08;
             }
         }
 
@@ -455,25 +367,23 @@
         </filter>
     </svg>
 
-    <!-- 頂部與底部元素移出動畫容器以防止位移 -->
+    <!-- 頂欄與頁底元素 -->
     <div class="header-lang-switcher">
         <a class="active">繁中</a>
         <a href="#">EN</a>
     </div>
 
-    <!-- 頁底版權聲明 -->
     <div class="footer-copyright">
         © 2026 拾載專案團隊．版權所有
     </div>
 
-    <!-- 頁底連結 -->
     <div class="footer-links">
         <a href="#">服務條款</a>
         <a href="#">注意事項</a>
         <a href="#">官方網站</a>
     </div>
 
-    <!-- 台南全市地圖裝飾 -->
+    <!-- 台南全市地圖 -->
     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Tainan_districts_blank.svg/2163px-Tainan_districts_blank.svg.png" 
          class="tainan-map-overlay" 
          alt="Tainan Map">
@@ -493,11 +403,13 @@
     <div class="main-layout">
         <div class="bg-number">10</div>
         <div class="title-wrapper">
+            <!-- 標題組合 -->
             <div class="title-group">
                 <h1 class="vertical-title">拾載</h1>
             </div>
 
             <div class="text-stack">
+                <!-- 全長分隔線 + 中央集中脈衝波形 -->
                 <svg class="seismic-wave-divider" viewBox="0 0 40 1000" preserveAspectRatio="none">
                     <line class="seismic-base-line" x1="20" y1="0" x2="20" y2="1000" />
                     <path class="seismic-path" d="M20,0 L20,380 L18,395 L22,410 L16,425 L25,440 L10,460 L32,480 L0,505 L40,530 L5,555 L35,575 L12,595 L26,610 L18,625 L21,640 L20,660 L20,1000" />
@@ -545,26 +457,17 @@
         const closeModalBtn = document.getElementById('close-modal-btn');
         const closeModalX = document.getElementById('close-modal-x');
 
-        const closeHandler = () => {
-            modalOverlay.classList.remove('active');
-        };
-
-        returnBtn.addEventListener('click', () => {
-            modalOverlay.classList.add('active');
-        });
-
+        const closeHandler = () => { modalOverlay.classList.remove('active'); };
+        returnBtn.addEventListener('click', () => { modalOverlay.classList.add('active'); });
         closeModalBtn.addEventListener('click', closeHandler);
         closeModalX.addEventListener('click', closeHandler);
-
-        modalOverlay.addEventListener('click', (e) => {
-            if (e.target === modalOverlay) closeHandler();
-        });
+        modalOverlay.addEventListener('click', (e) => { if (e.target === modalOverlay) closeHandler(); });
 
         // --- 星空與背景邏輯 ---
         const canvas = document.getElementById('interactive-canvas');
         const ctx = canvas.getContext('2d');
         let stars = [];
-        const starCount = 117; 
+        const starCount = window.innerWidth < 768 ? 60 : 117; // 手機版星辰數量減少以優化效能
         let mouse = { x: -1000, y: -1000 };
 
         function resize() {
@@ -596,15 +499,13 @@
                 gradient.addColorStop(1, "transparent");
                 ctx.fillStyle = gradient;
                 ctx.beginPath(); ctx.arc(this.x, this.y, currentSize * 6, 0, Math.PI * 2); ctx.fill();
-                ctx.fillStyle = `rgba(255, 255, 255, ${currentAlpha * 0.9})`;
-                ctx.beginPath(); ctx.arc(this.x, this.y, currentSize * 0.45, 0, Math.PI * 2); ctx.fill();
                 ctx.restore();
             }
             update() {
                 let dx = mouse.x - this.baseX; let dy = mouse.y - this.baseY;
                 let distance = Math.sqrt(dx * dx + dy * dy);
-                if (distance < 500) {
-                    let strength = (500 - distance) / 500;
+                if (distance < 300) {
+                    let strength = (300 - distance) / 300;
                     let targetX = this.baseX + (dx * strength * 0.035);
                     let targetY = this.baseY + (dy * strength * 0.035);
                     this.x += (targetX - this.x) * 0.08; this.y += (targetY - this.y) * 0.08;
@@ -613,10 +514,8 @@
                 }
                 if (this.isGlowing) { if (this.glowFactor < 1) this.glowFactor += this.glowSpeed; }
                 else { if (this.glowFactor > 0) this.glowFactor -= this.glowSpeed * 0.4; }
-                if (this.glowFactor < 0.5) {
-                    this.alpha += this.blinkSpeed;
-                    if (this.alpha > 0.95 || this.alpha < 0.35) this.blinkSpeed *= -1;
-                }
+                this.alpha += this.blinkSpeed;
+                if (this.alpha > 0.95 || this.alpha < 0.35) this.blinkSpeed *= -1;
             }
         }
 
@@ -629,8 +528,7 @@
         const updateMousePos = (e) => {
             const clientX = e.touches ? e.touches[0].clientX : e.clientX;
             const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-            mouse.x = clientX;
-            mouse.y = clientY;
+            mouse.x = clientX; mouse.y = clientY;
         };
         window.addEventListener('mousemove', updateMousePos);
         window.addEventListener('touchmove', updateMousePos);
