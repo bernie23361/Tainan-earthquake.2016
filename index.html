@@ -28,7 +28,7 @@
             padding-left: 8%;
         }
 
-        /* 幾何線條風格的數字 10 */
+        /* 條紋線條數字 10 */
         .bg-number {
             position: absolute;
             left: 2%;
@@ -39,17 +39,9 @@
             line-height: 1;
             z-index: -1;
             user-select: none;
-            
-            /* 達成線條字體的效果 */
             color: transparent;
-            -webkit-text-stroke: 1px rgba(212, 175, 55, 0.3); /* 金色細邊框 */
-            background: repeating-linear-gradient(
-                45deg,
-                transparent,
-                transparent 10px,
-                rgba(212, 175, 55, 0.1) 10px,
-                rgba(212, 175, 55, 0.1) 11px
-            );
+            -webkit-text-stroke: 1px rgba(212, 175, 55, 0.3);
+            background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(212, 175, 55, 0.1) 10px, rgba(212, 175, 55, 0.1) 11px);
             background-clip: text;
             -webkit-background-clip: text;
         }
@@ -57,38 +49,63 @@
         .event-time { color: #d4af37; font-size: 1.1rem; letter-spacing: 0.4rem; margin-bottom: 20px; animation: golden-twinkle 4s infinite ease-in-out; }
         @keyframes golden-twinkle { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; text-shadow: 0 0 10px #d4af37; } }
 
-        /* 直式標題 */
+        /* --- 標題區域更新 --- */
         .title-wrapper { display: flex; align-items: center; margin-bottom: 40px; }
+        
+        /* 拾載：直式大標 */
         h1.vertical-title {
             writing-mode: vertical-rl;
-            font-size: 7rem;
+            font-size: 7.5rem;
             font-weight: 900;
             letter-spacing: 1.8rem;
             margin: 0;
             line-height: 1;
             text-shadow: 0 0 30px rgba(0,0,0,0.8);
         }
-        .sub-title { font-size: 2.2rem; font-weight: 300; letter-spacing: 0.6rem; margin-left: 35px; border-left: 1px solid rgba(255,255,255,0.3); padding-left: 25px; }
+
+        /* 副標題容器：0206 / 撼動南台... */
+        .sub-title-group {
+            display: flex;
+            flex-direction: column;
+            margin-left: 40px;
+            border-left: 1px solid rgba(255,255,255,0.2);
+            padding-left: 30px;
+        }
+
+        .date-slash-wrap {
+            display: flex;
+            align-items: center;
+            font-size: 3.5rem;
+            font-weight: 900; /* 加粗 */
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        /* 金色斜線 */
+        .slash {
+            color: #d4af37;
+            margin: 0 15px;
+            font-weight: 300;
+            font-style: italic;
+            font-size: 4rem;
+        }
+
+        .main-sub-text {
+            font-size: 2.2rem;
+            font-weight: 900; /* 加粗 */
+            letter-spacing: 0.5rem;
+            white-space: nowrap;
+        }
 
         /* 副標題文案 */
         .slogan-container { height: 120px; margin-bottom: 50px; }
         #slogan-text { font-size: 1.15rem; line-height: 2.2; text-align: left; padding-left: 25px; border-left: 2px solid #d4af37; transition: all 2s ease-in-out; }
         #slogan-text.ribbon-mode { border-left: 0px solid transparent; padding-left: 55px; background-image: url('assets/ribbon.png'); background-repeat: no-repeat; background-position: left center; background-size: 40px; }
-        .fade-out { opacity: 0 !important; }
 
-        /* 按鈕與地震波 */
-        .enter-btn { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.25); color: white; padding: 14px 65px; cursor: pointer; backdrop-filter: blur(8px); letter-spacing: 0.5rem; transition: 0.5s; font-size: 1rem; }
+        .enter-btn { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.25); color: white; padding: 14px 65px; cursor: pointer; backdrop-filter: blur(8px); letter-spacing: 0.5rem; transition: 0.5s; }
         .enter-btn:hover { background: #d4af37; color: #000; box-shadow: 0 0 20px rgba(212, 175, 55, 0.4); }
 
-        .seismic-line {
-            position: absolute;
-            bottom: 12%;
-            left: 0;
-            width: 100%;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, #d4af37, transparent);
-            opacity: 0.4;
-        }
+        .seismic-line { position: absolute; bottom: 12%; left: 0; width: 100%; height: 1px; background: linear-gradient(90deg, transparent, #d4af37, transparent); opacity: 0.4; }
     </style>
 </head>
 <body>
@@ -106,7 +123,14 @@
         
         <div class="title-wrapper">
             <h1 class="vertical-title">拾載</h1>
-            <div class="sub-title">重返震撼南台的那一晚</div>
+            
+            <div class="sub-title-group">
+                <div class="date-slash-wrap">
+                    <span>0206</span>
+                    <span class="slash">/</span>
+                </div>
+                <div class="main-sub-text">重返撼動南台的那一晚</div>
+            </div>
         </div>
 
         <div class="slogan-container">
@@ -135,7 +159,7 @@
             starElements.push(star);
         }
 
-        // 2. 視差與副標題切換邏輯 (與先前相同)
+        // 2. 視差與副標題切換
         window.addEventListener('mousemove', (e) => {
             const moveX = (window.innerWidth / 2 - e.clientX) * 0.015;
             const moveY = (window.innerHeight / 2 - e.clientY) * 0.015;
@@ -146,11 +170,11 @@
         const finalSlogan = "這片星空，為 0206 地震中的 117 條生命而存在！";
 
         setTimeout(() => {
-            sloganElement.classList.add('fade-out');
+            sloganElement.style.opacity = '0';
             setTimeout(() => {
                 sloganElement.innerHTML = finalSlogan;
                 sloganElement.classList.add('ribbon-mode');
-                sloganElement.classList.remove('fade-out');
+                sloganElement.style.opacity = '1';
                 starElements.forEach(star => {
                     star.style.animation = 'none'; 
                     star.style.opacity = '1';
