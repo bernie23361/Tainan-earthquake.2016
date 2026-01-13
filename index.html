@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>拾載：重返震撼南台的那一晚</title>
+    <title>拾載：重返撼動南台的那一晚</title>
     <style>
-        /* 1. 核心與背景 - 已更新為 RAL 5022 夜藍色 (#252850) */
+        /* 1. 核心與背景 - RAL 5022 夜藍色 (#252850) */
         body, html { 
             margin: 0; padding: 0; width: 100%; height: 100%; 
-            background-color: #252850; /* RAL 5022 Night Blue */
+            background-color: #252850; 
             color: white; 
             font-family: "Noto Sans TC", sans-serif; 
             overflow: hidden; 
@@ -18,12 +18,12 @@
         .slide { 
             position: absolute; inset: 0; background-size: cover; background-position: center; 
             opacity: 0; transition: opacity 3s ease-in-out; 
-            /* 讓照片融入夜藍色 */
-            filter: brightness(0.2) contrast(1.1) blur(2px) sepia(0.2) hue-rotate(190deg); 
+            /* 讓照片帶有夜藍色的深邃感與輕微模糊，不干擾文字 */
+            filter: brightness(0.18) contrast(1.1) blur(2px) saturate(0.8) hue-rotate(10deg); 
         }
-        .slide.active { opacity: 0.25; }
+        .slide.active { opacity: 0.35; }
 
-        /* 2. 117 顆星辰 */
+        /* 2. 117 顆星辰層 */
         #stars-container { position: fixed; inset: -100px; z-index: 1; pointer-events: none; }
         .star { 
             position: absolute; background: #fff; border-radius: 50%; opacity: 0.4; 
@@ -44,7 +44,7 @@
             padding-left: 8%;
         }
 
-        /* 幾何條紋 10 背景 - 配合夜藍色調暗金色 */
+        /* 幾何條紋數字 10 背景 */
         .bg-number {
             position: absolute;
             left: 2%;
@@ -133,13 +133,23 @@
         }
         .enter-btn:hover { background: #d4af37; color: #000; box-shadow: 0 0 20px rgba(212, 175, 55, 0.4); }
 
+        /* 底部地震波 */
         .seismic-line { position: absolute; bottom: 12%; left: 0; width: 100%; height: 1px; background: linear-gradient(90deg, transparent, #d4af37, transparent); opacity: 0.4; }
     </style>
 </head>
 <body>
 
     <div id="slideshow">
-        <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?q=80&w=2071');"></div>
+        <div class="slide active" style="background-image: url('https://photo.ardswc.gov.tw/api/Media/637579817545766630/facebook?r=639038600489536854');"></div>
+        <div class="slide" style="background-image: url('https://photo.ardswc.gov.tw/api/Media/637579816952952614/facebook?r=639038602958658272');"></div>
+        <div class="slide" style="background-image: url('https://photo.ardswc.gov.tw/api/Media/637579816726729685/facebook?r=639038603384152621');"></div>
+        <div class="slide" style="background-image: url('https://photo.ardswc.gov.tw/api/Media/637579816445843595/facebook?r=639038603979416688');"></div>
+        <div class="slide" style="background-image: url('https://photo.ardswc.gov.tw/api/Media/637579816215980444/facebook?r=639038604305975401');"></div>
+        <div class="slide" style="background-image: url('https://photo.ardswc.gov.tw/api/Media/637579815441246111/facebook?r=639038604604532476');"></div>
+        <div class="slide" style="background-image: url('https://photo.ardswc.gov.tw/api/Media/637579814829721050/facebook?r=639038605000705184');"></div>
+        <div class="slide" style="background-image: url('https://photo.ardswc.gov.tw/api/Media/637579815183001263/facebook?r=639038605356185563');"></div>
+        <div class="slide" style="background-image: url('https://photo.ardswc.gov.tw/api/Media/637579819870559723/facebook?r=639038605834422927');"></div>
+        <div class="slide" style="background-image: url('https://photo.ardswc.gov.tw/api/Media/637579818544244018/facebook?r=639038606421916601');"></div>
     </div>
 
     <div id="stars-container"></div>
@@ -166,6 +176,7 @@
     </div>
 
     <script>
+        // 1. 生成 117 顆星辰
         const container = document.getElementById('stars-container');
         const starElements = [];
         for (let i = 0; i < 117; i++) {
@@ -181,12 +192,23 @@
             starElements.push(star);
         }
 
+        // 2. 照片輪播邏輯 (8秒切換)
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        setInterval(() => {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }, 8000);
+
+        // 3. 視差位移
         window.addEventListener('mousemove', (e) => {
             const moveX = (window.innerWidth / 2 - e.clientX) * 0.015;
             const moveY = (window.innerHeight / 2 - e.clientY) * 0.015;
             container.style.transform = `translate3d(${moveX}px, ${moveY}px, 0)`;
         });
 
+        // 4. 文字與星辰共鳴邏輯
         const sloganElement = document.getElementById('slogan-text');
         const finalSlogan = "這片星空，為 0206 地震中的 117 條生命而存在！";
 
