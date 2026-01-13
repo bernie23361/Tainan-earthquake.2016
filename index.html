@@ -5,32 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>拾載：重返撼動南台的那一晚</title>
     <style>
-        /* 1. 配色：RAL 5022 夜藍色 (#252850) 與高級暗調 */
+        /* 1. 配色：深灰色 (#121212) */
         body, html { 
             margin: 0; padding: 0; width: 100%; height: 100%; 
-            background-color: #0b0d1a; /* 比 RAL 5022 更深一點的基底 */
+            background-color: #0d0d0d; 
             color: white; font-family: "Noto Sans TC", sans-serif; overflow: hidden; 
         }
 
         /* 2. 背景容器與漸變遮罩 */
-        #slideshow { position: fixed; inset: 0; z-index: 0; background: #252850; }
+        #slideshow { position: fixed; inset: 0; z-index: 0; background: #1a1a1a; } 
         
-        /* 高級感核心：深色淡底漸變遮罩 */
         #slideshow::after {
             content: ""; position: absolute; inset: 0; z-index: 2;
-            background: radial-gradient(circle at 20% 50%, rgba(37, 40, 80, 0) 0%, rgba(11, 13, 26, 0.8) 100%);
+            /* 深灰色徑向漸層 - 底部與邊緣加深 */
+            background: radial-gradient(circle at 20% 50%, rgba(26, 26, 26, 0) 0%, rgba(13, 13, 13, 0.95) 100%);
         }
 
         .slide { 
             position: absolute; inset: 0; background-size: cover; background-position: center; 
             opacity: 0; transition: opacity 4s ease-in-out; 
-            filter: brightness(0.25) contrast(1.2) grayscale(0.4) blur(2px);
+            filter: brightness(0.25) contrast(1.1) grayscale(0.9) blur(3px);
         }
-        .slide.active { opacity: 0.4; }
+        .slide.active { opacity: 0.45; }
 
-        /* 3. 畫布層：負責滑鼠互動星空 */
+        /* 3. 互動星空畫布 - 確保 z-index 在遮罩 (z-2) 之上 */
         #interactive-canvas {
-            position: fixed; inset: 0; z-index: 1; pointer-events: none;
+            position: fixed; 
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            z-index: 5; 
+            pointer-events: none;
+            display: block;
         }
 
         /* 4. 左側佈局 */
@@ -40,7 +45,7 @@
             align-items: flex-start; padding-left: 8%;
         }
 
-        /* 條紋 10 背景 */
+        /* 幾何條紋 10 背景 */
         .bg-number {
             position: absolute; left: 2%; top: 50%; transform: translateY(-50%);
             font-size: 35rem; font-weight: 900; line-height: 1; z-index: -1; user-select: none;
@@ -73,22 +78,29 @@
         .slogan-container { height: 130px; max-width: 650px; }
         #slogan-text {
             font-size: 1.15rem; line-height: 2.3; text-align: left;
-            transition: all 2s ease-in-out; color: rgba(255, 255, 255, 0.8);
+            transition: all 2s ease-in-out; color: rgba(255, 255, 255, 0.9);
         }
         #slogan-text.ribbon-mode {
             padding-left: 55px; background-image: url('assets/ribbon.png');
             background-repeat: no-repeat; background-position: left center; background-size: 42px;
         }
 
-        /* 按鈕與底部裝飾 */
+        /* 按鈕群組 */
+        .btn-group {
+            display: flex;
+            gap: 20px;
+            margin-top: 15px;
+        }
+
         .enter-btn {
             background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.2);
-            color: white; padding: 16px 70px; cursor: pointer; backdrop-filter: blur(10px);
-            letter-spacing: 0.6rem; transition: 0.6s; margin-top: 15px; font-size: 1.05rem;
+            color: white; padding: 16px 50px; cursor: pointer; backdrop-filter: blur(10px);
+            letter-spacing: 0.4rem; transition: 0.6s; font-size: 1.05rem;
+            min-width: 200px;
+            text-align: center;
         }
         .enter-btn:hover { background: #d4af37; color: #000; box-shadow: 0 0 30px rgba(212, 175, 55, 0.3); }
 
-        .seismic-line { position: absolute; bottom: 10%; left: 0; width: 100%; height: 1px; background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.5), transparent); }
     </style>
 </head>
 <body>
@@ -97,8 +109,16 @@
         <div class="slide active" style="background-image: url('https://photo.ardswc.gov.tw/api/Media/637579817545766630/facebook?r=639038600489536854');"></div>
         <div class="slide" style="background-image: url('https://photo.ardswc.gov.tw/api/Media/637579816952952614/facebook?r=639038602958658272');"></div>
         <div class="slide" style="background-image: url('https://photo.ardswc.gov.tw/api/Media/637579816726729685/facebook?r=639038603384152621');"></div>
+        <div class="slide" style="background-image: url('https://photo.ardswc.gov.tw/api/Media/637579816445843595/facebook?r=639038603979416688');"></div>
+        <div class="slide" style="background-image: url('https://photo.ardswc.gov.tw/api/Media/637579816215980444/facebook?r=639038604305975401');"></div>
+        <div class="slide" style="background-image: url('https://photo.ardswc.gov.tw/api/Media/637579815441246111/facebook?r=639038604604532476');"></div>
+        <div class="slide" style="background-image: url('https://photo.ardswc.gov.tw/api/Media/637579814829721050/facebook?r=639038605000705184');"></div>
+        <div class="slide" style="background-image: url('https://photo.ardswc.gov.tw/api/Media/637579815183001263/facebook?r=639038605356185563');"></div>
+        <div class="slide" style="background-image: url('https://photo.ardswc.gov.tw/api/Media/637579819870559723/facebook?r=639038605834422927');"></div>
+        <div class="slide" style="background-image: url('https://photo.ardswc.gov.tw/api/Media/637579818544244018/facebook?r=639038606421916601');"></div>
     </div>
 
+    <!-- 畫布層 -->
     <canvas id="interactive-canvas"></canvas>
 
     <div class="main-layout">
@@ -111,10 +131,12 @@
                 <div class="slogan-container">
                     <div id="slogan-text">十年前...這座島嶼，在時隔 17 年後的黑夜裡，再次發生了劇烈的晃動。<br>那一刻，全台甦醒，記憶留下了痕跡。<br>我們之所以選擇記得，那是因為，記得就是一種前行。</div>
                 </div>
-                <button class="enter-btn">拾起記憶</button>
+                <div class="btn-group">
+                    <button class="enter-btn">關於拾載</button>
+                    <button class="enter-btn">重返當年</button>
+                </div>
             </div>
         </div>
-        <div class="seismic-line"></div>
     </div>
 
     <script>
@@ -128,62 +150,118 @@
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
         }
-        window.addEventListener('resize', resize);
-        resize();
 
-        // 1. 初始化 117 顆星辰
+        const colors = [
+            "rgba(255, 255, 255, ", 
+            "rgba(245, 245, 245, ", 
+            "rgba(255, 252, 240, ", 
+            "rgba(250, 250, 255, "  
+        ];
+
         class Star {
             constructor() {
+                this.init();
+            }
+            init() {
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
                 this.baseX = this.x;
                 this.baseY = this.y;
-                this.size = Math.random() * 2 + 1;
-                this.alpha = Math.random() * 0.5 + 0.2;
-                this.blinkSpeed = Math.random() * 0.02 + 0.01;
+                this.size = Math.random() * 1.8 + 0.8; 
+                this.colorBase = colors[Math.floor(Math.random() * colors.length)];
+                this.alpha = Math.random() * 0.6 + 0.4; 
+                this.blinkSpeed = Math.random() * 0.01 + 0.005;
                 this.isGlowing = false;
+                this.glowFactor = 0; 
+                this.glowSpeed = 0.01 + Math.random() * 0.02; 
             }
             draw() {
+                let currentAlpha = this.alpha + (1.0 - this.alpha) * this.glowFactor;
+                let currentSize = this.size + (this.size * 2.5) * this.glowFactor;
+
+                ctx.save();
+                const gradient = ctx.createRadialGradient(
+                    this.x, this.y, 0,
+                    this.x, this.y, currentSize * 4
+                );
+                gradient.addColorStop(0, this.colorBase + currentAlpha + ")");
+                gradient.addColorStop(0.4, this.colorBase + (currentAlpha * 0.3) + ")");
+                gradient.addColorStop(1, "transparent");
+
+                ctx.fillStyle = gradient;
                 ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
-                ctx.shadowBlur = this.isGlowing ? 15 : 0;
-                ctx.shadowColor = "white";
+                ctx.arc(this.x, this.y, currentSize * 6, 0, Math.PI * 2);
                 ctx.fill();
+
+                ctx.fillStyle = `rgba(255, 255, 255, ${currentAlpha * 0.95})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, currentSize * 0.5, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
             }
             update() {
-                // 滑鼠互動：微弱引力
-                let dx = mouse.x - this.x;
-                let dy = mouse.y - this.y;
+                let dx = mouse.x - this.baseX;
+                let dy = mouse.y - this.baseY;
                 let distance = Math.sqrt(dx * dx + dy * dy);
-                let force = (200 - distance) / 200;
-                if (distance < 200) {
-                    this.x -= dx * force * 0.05;
-                    this.y -= dy * force * 0.05;
+                let swayRange = 450; 
+                
+                if (distance < swayRange) {
+                    let strength = (swayRange - distance) / swayRange;
+                    let targetX = this.baseX + (dx * strength * 0.05);
+                    let targetY = this.baseY + (dy * strength * 0.05);
+                    this.x += (targetX - this.x) * 0.1;
+                    this.y += (targetY - this.y) * 0.1;
                 } else {
                     this.x += (this.baseX - this.x) * 0.05;
                     this.y += (this.baseY - this.y) * 0.05;
                 }
-                // 自然閃爍
-                if (!this.isGlowing) {
+
+                if (this.isGlowing) {
+                    if (this.glowFactor < 1) this.glowFactor += this.glowSpeed;
+                } else {
+                    if (this.glowFactor > 0) this.glowFactor -= this.glowSpeed * 0.5;
+                }
+
+                if (this.glowFactor < 0.5) {
                     this.alpha += this.blinkSpeed;
-                    if (this.alpha > 0.8 || this.alpha < 0.2) this.blinkSpeed *= -1;
+                    if (this.alpha > 1.0 || this.alpha < 0.3) this.blinkSpeed *= -1;
                 }
             }
         }
 
-        for (let i = 0; i < starCount; i++) stars.push(new Star());
+        function initStars() {
+            stars = [];
+            for (let i = 0; i < starCount; i++) {
+                stars.push(new Star());
+            }
+        }
 
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            stars.forEach(s => { s.update(); s.draw(); });
+            stars.forEach(s => { 
+                s.update(); 
+                s.draw(); 
+            });
             requestAnimationFrame(animate);
         }
+
+        // 立即啟動
+        resize();
+        initStars();
         animate();
 
-        window.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; });
+        // 監聽事件
+        window.addEventListener('resize', () => {
+            resize();
+            initStars(); // 重新分配星星位置以符合新尺寸
+        });
 
-        // 2. 輪播照片邏輯
+        window.addEventListener('mousemove', (e) => { 
+            mouse.x = e.clientX; 
+            mouse.y = e.clientY; 
+        });
+
+        // 輪播邏輯
         let currentSlide = 0;
         const slides = document.querySelectorAll('.slide');
         setInterval(() => {
@@ -192,21 +270,18 @@
             slides[currentSlide].classList.add('active');
         }, 8000);
 
-        // 3. 文字與 117 顆星集體亮起
+        // 文案轉場
         const sloganElement = document.getElementById('slogan-text');
         setTimeout(() => {
             sloganElement.style.opacity = '0';
             setTimeout(() => {
-                sloganElement.innerHTML = "這片星空，為 0206 地震中的 117 條生命而存在！";
+                sloganElement.innerHTML = "這片星空，為 0206 地震中的 117 位犧牲者而存在！<br>每一顆星，象徵一段被留下的生命，也提醒我們，那一夜從未真正遠去。";
                 sloganElement.classList.add('ribbon-mode');
                 sloganElement.style.opacity = '1';
-                // 讓所有星辰集體發光
-                stars.forEach(s => {
-                    s.isGlowing = true; s.alpha = 1; s.size = 4;
-                });
+                stars.forEach(s => { s.isGlowing = true; });
                 setTimeout(() => {
-                    stars.forEach(s => { s.isGlowing = false; s.size = Math.random() * 2 + 1; });
-                }, 5000);
+                    stars.forEach(s => { s.isGlowing = false; });
+                }, 6000); 
             }, 2000);
         }, 5000);
     </script>
